@@ -1,10 +1,9 @@
-import Image from "next/image";
-import Login from "@/components/Login";
+import { signOut } from "./login/action";
 
 export default function Home() {
   return (
-    <>
-      <Login />
-    </>
+    <form>
+      <button formAction={signOut}>ログアウト</button>
+    </form>
   );
 }
