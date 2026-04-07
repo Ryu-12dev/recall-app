@@ -21,7 +21,7 @@ export default function Sidebar() {
             </Link>
           </div>
           <div className="hover:cursor-pointer hover:bg-neutral-200 hover:text-blue-400 p-3 mb-10 rounded-xl">
-            <Link href="/cards">
+            <Link href="/questions">
               <Database width={27} height={27} />
             </Link>
           </div>

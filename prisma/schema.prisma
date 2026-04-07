@@ -11,3 +11,30 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum Result {
+  CORRECT
+  INCORRECT
+  PARTIAL
+}
+
+model Decks {
+  id     String @id 
+  userId String 
+  name   String
+}
+
+model Cards {
+  id     String @id 
+  deckId String 
+  front  String
+  back   String
+  answerAt DateTime @default(now())
+}
+
+model Records {
+  id          String @id
+  cardId      String
+  userId      String
+  result      Result
+}
