@@ -11,7 +11,7 @@ export default async function addDeck(name: string) {
     throw new Error("ログインが必要です");
   }
 
-  return await prisma.decks.create({
+  await prisma.decks.create({
     data: {
       userId: user.id,
       name,
