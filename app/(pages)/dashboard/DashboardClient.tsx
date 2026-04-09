@@ -1,8 +1,8 @@
 "use client"
 
-import { Decks } from "@/app/generated/prisma";
+import type { Deck } from "@/lib/type";
 
-export default function DashboardClient({ decks }: { decks: Decks[] }) {
+export default function DashboardClient({ decks }: { decks: Deck[] }) {
   return (
     <div>
       {decks.map(deck => (
