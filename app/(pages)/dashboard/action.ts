@@ -2,8 +2,12 @@
 
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
 
 export default async function addDeck(name: string) {
+  if (!name.trim()) {
+    return { error: "デッキ名を入力してください。" };
+  }
   console.log("addDeck called with name:", name);
 
   const supabase = await createClient();
@@ -27,4 +31,17 @@ export default async function addDeck(name: string) {
   });
 
   console.log("Deck created successfully");
+
+  revalidatePath("/dashboard")
+
+  return { error: null };
+}
+
+export async function deleteDeck(id: string) {
+  await prisma.decks.delete({
+    where: {
+      id,
+    }
+  });
+  revalidatePath("/dashboard")
 }

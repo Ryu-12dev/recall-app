@@ -10,7 +10,13 @@ export default function AddDeckModal() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const name = formData.get("name") as string;
-    await addDeck(name);
+    if (!name.trim()) {
+      return ;
+    }
+    const result = await addDeck(name);
+    if (result.error) {
+      alert(result.error);
+    }
     setIsOpen(false);
   };
   return (
