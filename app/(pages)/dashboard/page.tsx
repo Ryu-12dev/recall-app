@@ -10,11 +10,9 @@ export default async function Dashboard() {
         <AddDeckModal />
       </header>
       <main className="">
-        <nav>
-          <Suspense>
-            <DashboardContent />
-          </Suspense>
-        </nav>
+        <Suspense>
+          <DashboardContent />
+        </Suspense>
       </main>
     </div>
   );

@@ -3,9 +3,9 @@ import Sidebar from "@/components/Sidebar";
 
 export default function pagesLayout({children}: {children: ReactNode}) {
   return (
-    <div className="flex">
+    <div className="flex h-screen">
       <Sidebar />
-      <main className="bg-sky-50 flex-1">{children}</main>
+      <main className="bg-sky-50 flex-1 overflow-y-auto">{children}</main>
     </div>
   );
 }

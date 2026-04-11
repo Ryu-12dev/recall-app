@@ -16,18 +16,20 @@ export default async function DashboardContent() {
   });
 
   return (
-    <div className="grid grid-cols-4 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {decks.map(deck => (
         <div
           key={deck.id}
           className="group bg-white py-4 px-8 rounded-2xl shadow-md border border-white border-4
-          hover:border-blue-200"
+          hover:-translate-y-1 hover:shadow-xl hover:shadow-xl
+          transition duration-300 ease-out"
+          
         >
-          <header className="flex items-center justify-between">
-            <p className="text-2xl">
+          <header className="flex items-center justify-between gap-2">
+            <p className="text-2xl truncate flex-1 min-w-0 font-semibold">
               {deck.name}
             </p>
-            <div className="hidden group-hover:flex">
+            <div className="hidden group-hover:flex items-center shrink-0">
               <button
                 className="text-gray-400 mr-6 hover:text-black hover:cursor-pointer"
               >

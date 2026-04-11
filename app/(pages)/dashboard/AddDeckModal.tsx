@@ -22,10 +22,12 @@ export default function AddDeckModal() {
   return (
     <>
       <button
-        className="hover:cursor-pointer hover:bg-gray-200 bg-white rounded-full p-4"
+        className="text-white bg-blue-500 rounded-full p-4
+        bg-gradient-to-r from-sky-500 to-blue-700
+        hover:cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
-        <FolderPlus className="text-gray-500" />
+        <FolderPlus />
       </button>
       {isOpen && (
         <div
