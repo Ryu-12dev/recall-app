@@ -1,9 +1,6 @@
 import type { Deck } from "@/lib/type";
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { Pencil, LucideTrash } from "lucide-react";
-import IconButton from "@/components/IconButton";
-import DeleteDeckButton from "./DeleteDeckButton";
 import DeckActionButtons from "./_components/DeckActionButtons";
 
 export default async function DashboardContent() {
