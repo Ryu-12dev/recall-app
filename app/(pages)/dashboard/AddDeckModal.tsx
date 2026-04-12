@@ -22,7 +22,7 @@ export default function AddDeckModal() {
   return (
     <>
       <button
-        className="text-white bg-blue-500 rounded-full p-4
+        className="text-white rounded-full p-4
         bg-gradient-to-r from-sky-500 to-blue-700
         hover:cursor-pointer"
         onClick={() => setIsOpen(true)}
@@ -45,11 +45,14 @@ export default function AddDeckModal() {
                 type="text"
                 name="name"
                 placeholder="デッキ名"
+                autoComplete="off"
+                autoFocus={true}
                 className="w-full border p-2 mb-4 rounded"
               />
               <button
                 type="submit"
-                className="w-full bg-blue-500 text-white p-2 rounded"
+                className="w-full bg-blue-500 text-white p-3 rounded
+                hover:cursor-pointer bg-gradient-to-r from-sky-500 to-blue-700"
               >
                 作成
               </button>
