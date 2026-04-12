@@ -23,8 +23,8 @@ export default function EditDeckModal({ id, onClose }: { id: string, onClose: ()
         />
         <button 
           type="submit"
-          className="w-full bg-white text-red-800 border border-red-500 p-3 rounded
-          hover:cursor-pointer hover:text-white hover:bg-gradient-to-r hover:from-rose-500 hover:to-red-700"
+          className="w-full bg-gradient-to-r from-green-500 to-green-400 text-white border p-3 rounded
+          hover:cursor-pointer "
         >
           更新
         </button>
