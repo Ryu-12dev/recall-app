@@ -2,7 +2,6 @@
 
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { read } from "fs";
 import { revalidatePath } from "next/cache";
 
 export default async function addDeck(name: string) {
@@ -48,6 +47,11 @@ export async function deleteDeck(id: string) {
 }
 
 export async function editDeck(id: string, name: string) {
+  if (!name.trim()) {
+    return (
+      {error: "デッキ名を入力してください。"}
+    );
+  }
   await prisma.decks.update({
     where: {
       id,
@@ -56,6 +60,8 @@ export async function editDeck(id: string, name: string) {
       name,
     }
   });
+
   revalidatePath("/dashboard");
-  
+
+  return {error: null};
 }

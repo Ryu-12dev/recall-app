@@ -7,6 +7,9 @@ export default function EditDeckModal({ id, onClose }: { id: string, onClose: ()
       return;
     }
     const result = await editDeck(id, name);
+    if (result.error) {
+      alert(result.error);
+    }
     onClose();
   }
   return (
