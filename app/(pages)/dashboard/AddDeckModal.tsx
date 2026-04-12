@@ -39,7 +39,6 @@ export default function AddDeckModal() {
             onClick={(e) => e.stopPropagation()}
           >
             <h2 className="text-lg font-bold mb-4">デッキ作成</h2>
-
             <form onSubmit={handleSubmit}>
               <input
                 type="text"

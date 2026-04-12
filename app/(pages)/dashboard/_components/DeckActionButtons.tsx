@@ -22,26 +22,24 @@ export default function DeckActionButtons({ id }: { id: string }) {
         <Pencil size={17} />
       </IconButton>
       {
-        isEditModal &&
-          createPortal(
-            <Modal onClose={editmodalClose}>
-              <EditDeckModal id={id} onClose={editmodalClose}/>
-            </Modal>,
-            document.body
-          )
+        createPortal(
+          <Modal onClose={editmodalClose} isOpen={isEditModal}>
+            <EditDeckModal id={id} onClose={editmodalClose}/>
+          </Modal>,
+          document.body
+        )
       }
 
       <IconButton onClick={deleteModalOpen}>
         <LucideTrash size={17} />
       </IconButton>
       {
-        isDeleteModal &&
-          createPortal(
-            <Modal onClose={deleteModalClose}>
-              <DeleteDeckModal id={id}/>
-            </Modal>,
-            document.body
-          )
+        createPortal(
+          <Modal onClose={deleteModalClose} isOpen={isDeleteModal}>
+            <DeleteDeckModal id={id}/>
+          </Modal>,
+          document.body
+        )
       }
     </div>
   );

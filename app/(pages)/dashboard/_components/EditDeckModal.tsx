@@ -1,6 +1,13 @@
+"use client"
+
+import { useRef, useEffect } from "react";
 import { editDeck } from "../action";
 
 export default function EditDeckModal({ id, onClose }: { id: string, onClose: () => void }) {
+  const input = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    input.current?.focus();
+  })
   const handleSubmit = async (formData: FormData) => {
     const name = formData.get("name") as string;
     if (!name.trim()) {
@@ -17,11 +24,11 @@ export default function EditDeckModal({ id, onClose }: { id: string, onClose: ()
       <p className="text-lg font-bold mb-4">編集</p>
       <form action={handleSubmit}>
         <input 
+          ref={input}
           type="text"
           name="name"
           placeholder="デッキ名"
           autoComplete="off"
-          autoFocus={true}
           className="w-full border p-2 mb-4 rounded"
         />
         <button 

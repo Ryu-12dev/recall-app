@@ -41,16 +41,14 @@ export async function deleteDeck(id: string) {
   await prisma.decks.delete({
     where: {
       id,
-    }
+    },
   });
   revalidatePath("/dashboard");
 }
 
 export async function editDeck(id: string, name: string) {
   if (!name.trim()) {
-    return (
-      {error: "デッキ名を入力してください。"}
-    );
+    return { error: "デッキ名を入力してください。" };
   }
   await prisma.decks.update({
     where: {
@@ -58,10 +56,10 @@ export async function editDeck(id: string, name: string) {
     },
     data: {
       name,
-    }
+    },
   });
 
   revalidatePath("/dashboard");
 
-  return {error: null};
+  return { error: null };
 }
