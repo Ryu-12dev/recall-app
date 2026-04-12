@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
+import { read } from "fs";
 import { revalidatePath } from "next/cache";
 
 export default async function addDeck(name: string) {
@@ -32,7 +33,7 @@ export default async function addDeck(name: string) {
 
   console.log("Deck created successfully");
 
-  revalidatePath("/dashboard")
+  revalidatePath("/dashboard");
 
   return { error: null };
 }
@@ -43,5 +44,18 @@ export async function deleteDeck(id: string) {
       id,
     }
   });
-  revalidatePath("/dashboard")
+  revalidatePath("/dashboard");
+}
+
+export async function editDeck(id: string, name: string) {
+  await prisma.decks.update({
+    where: {
+      id,
+    },
+    data: {
+      name,
+    }
+  });
+  revalidatePath("/dashboard");
+  
 }

@@ -1,8 +1,10 @@
 import type { Deck } from "@/lib/type";
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { Pencil } from "lucide-react";
+import { Pencil, LucideTrash } from "lucide-react";
+import IconButton from "@/components/IconButton";
 import DeleteDeckButton from "./DeleteDeckButton";
+import DeckActionButtons from "./_components/DeckActionButtons";
 
 export default async function DashboardContent() {
   const supabase = await createClient();
@@ -29,14 +31,7 @@ export default async function DashboardContent() {
             <p className="text-2xl truncate flex-1 min-w-0 font-semibold">
               {deck.name}
             </p>
-            <div className="hidden group-hover:flex items-center shrink-0">
-              <button
-                className="text-gray-400 mr-6 hover:text-black hover:cursor-pointer"
-              >
-                <Pencil size={17}/>
-              </button>
-              <DeleteDeckButton id={deck.id} />
-            </div>
+            <DeckActionButtons id={deck.id} />
           </header>
         </div>
       ))}
