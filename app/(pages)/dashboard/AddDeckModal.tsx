@@ -1,14 +1,20 @@
 "use client"
 
-import { useState } from "react";
-import addDeck from "./action";
+import { useState, useEffect, useRef } from "react";
 import { FolderPlus } from "lucide-react";
+import addDeck from "./action";
+import Modal from "@/components/Modal";
+import { createPortal } from "react-dom";
 
 export default function AddDeckModal() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
+  const input = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    input.current?.focus();
+  }, [])
+
+  const handleSubmit = async (formData: FormData) => {
     const name = formData.get("name") as string;
     if (!name.trim()) {
       return ;
@@ -29,23 +35,17 @@ export default function AddDeckModal() {
       >
         <FolderPlus />
       </button>
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 flex items-center justify-center"
-          onClick={() => setIsOpen(false)}
-        >
-          <div
-            className="bg-white p-6 rounded-xl w-80"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <h2 className="text-lg font-bold mb-4">デッキ作成</h2>
-            <form onSubmit={handleSubmit}>
+      {
+        createPortal(
+          <Modal onClose={() => setIsOpen(false)} isOpen={isOpen}>
+            <p className="text-lg font-bold mb-4">デッキを作成</p>
+            <form action={handleSubmit}>
               <input
+                ref={input}
                 type="text"
                 name="name"
                 placeholder="デッキ名"
                 autoComplete="off"
-                autoFocus={true}
                 className="w-full border p-2 mb-4 rounded"
               />
               <button
@@ -56,9 +56,10 @@ export default function AddDeckModal() {
                 作成
               </button>
             </form>
-          </div>
-        </div>
-      )}
+          </Modal>,
+          document.body
+        )
+      }
     </>
   )
 }
