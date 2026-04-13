@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { FolderPlus } from "lucide-react";
 import addDeck from "./action";
 import Modal from "@/components/Modal";
@@ -8,11 +8,9 @@ import { createPortal } from "react-dom";
 
 export default function AddDeckModal() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const input = useRef<HTMLInputElement>(null);
+  const [isMounted, setIsMounted] = useState<boolean>(false);
 
-  useEffect(() => {
-    input.current?.focus();
-  }, [])
+  useEffect(() => setIsMounted(true), []);
 
   const handleSubmit = async (formData: FormData) => {
     const name = formData.get("name") as string;
@@ -36,12 +34,13 @@ export default function AddDeckModal() {
         <FolderPlus />
       </button>
       {
+        isMounted &&
         createPortal(
           <Modal onClose={() => setIsOpen(false)} isOpen={isOpen}>
             <p className="text-lg font-bold mb-4">デッキを作成</p>
             <form action={handleSubmit}>
               <input
-                ref={input}
+                ref={el => el?.focus()}
                 type="text"
                 name="name"
                 placeholder="デッキ名"
