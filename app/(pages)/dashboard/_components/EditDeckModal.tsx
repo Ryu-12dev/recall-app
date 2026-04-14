@@ -1,5 +1,3 @@
-"use client"
-
 import { editDeck } from "../action";
 
 export default function EditDeckModal({ id, onClose }: { id: string, onClose: () => void }) {
@@ -16,7 +14,7 @@ export default function EditDeckModal({ id, onClose }: { id: string, onClose: ()
   }
   return (
     <>
-      <p className="text-lg font-bold mb-4">編集</p>
+      <p className="text-lg font-bold mb-4">デッキ名を変更</p>
       <form action={handleSubmit}>
         <input 
           ref={el => el?.focus()}
