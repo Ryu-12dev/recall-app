@@ -1,4 +1,18 @@
+"use client"
+
+import { ChangeEvent, useState } from "react";
+
 export default function AddCardModal({ id }: { id: string }) {
+  const [card, setCard] = useState({
+    front: "",
+    back: ""
+  });
+  const handleCard = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setCard({
+      ...card,
+      [e.target.name]: e.target.value
+    })
+  }
   return (
     <>
       <header>
@@ -10,12 +24,20 @@ export default function AddCardModal({ id }: { id: string }) {
         <div>
           <p className="text-base mb-2">表</p>
           <textarea 
-            ref={el => el?.focus()}
-            className="border rounded-lg text-2xl" />
+            name="front"
+            value={card.front}
+            onChange={handleCard}
+            className="border rounded-lg text-2xl"
+          />
         </div>
         <div>
           <p className="text-base mb-2">裏</p>
-          <textarea className="border rounded-lg text-2xl" />
+          <textarea 
+            name="back" 
+            value={card.back}
+            onChange={handleCard}
+            className="border rounded-lg text-2xl" 
+          />
         </div>
       </form>
     </>
