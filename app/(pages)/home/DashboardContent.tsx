@@ -24,12 +24,17 @@ export default async function DashboardContent() {
           hover:-translate-y-1 hover:shadow-xl hover:shadow-xl
           transition duration-300 ease-out"
         >
-          <header className="flex items-center justify-between gap-2">
-            <p className="text-2xl truncate flex-1 min-w-0 font-semibold">
+          <header className="flex items-center justify-between gap-2 mb-3">
+            <p className="text-xl truncate flex-1 min-w-0 font-semibold">
               {deck.name}
             </p>
             <DeckActionButtons id={deck.id} />
           </header>
+          <hr className="text-gray-400 mb-3" />
+          <footer className="flex gap-4">
+            <p className="text-blue-400">新規: {}</p>
+            <p>復習: {}</p>
+          </footer>
         </div>
       ))}
     </div>

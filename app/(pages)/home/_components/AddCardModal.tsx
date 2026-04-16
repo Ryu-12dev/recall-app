@@ -1,0 +1,52 @@
+"use client"
+
+import { ChangeEvent, useState } from "react";
+import { addCard } from "../action";
+
+export default function AddCardModal({ id }: { id: string }) {
+  const [card, setCard] = useState({
+    front: "",
+    back: ""
+  });
+  const handleCard = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setCard({
+      ...card,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  return (
+    <>
+      <div className="w-xl">
+      <header>
+        <h2 className="text-lg font-bold mb-4">カード追加</h2>
+      </header>
+      <form action={() => addCard(id, card.front, card.back)}>
+        <p className="text-base mb-2">表</p>
+        <textarea 
+          name="front"
+          value={card.front}
+          onChange={handleCard}
+          className="border rounded-lg text-2xl w-full mb-2 "
+        />
+        <p className="text-base mb-2">裏</p>
+        <textarea 
+          name="back" 
+          value={card.back}
+          onChange={handleCard}
+          className="border rounded-lg text-2xl w-full mb-2 " 
+        />
+        <button
+          type="submit"
+          className={`bg-blue-400 rounded-lg p-3 text-white w-full
+          hover:cursor-pointer
+          `}
+
+        >
+          追加する
+        </button>
+      </form>
+      </div>
+    </>
+  );
+}

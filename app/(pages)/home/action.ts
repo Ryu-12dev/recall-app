@@ -63,3 +63,13 @@ export async function editDeck(id: string, name: string) {
 
   return { error: null };
 }
+
+export async function addCard(id: string, frontText: string, backText: string) {
+  await prisma.cards.create({
+    data: {
+      deckId: id,
+      front: frontText,
+      back: backText,
+    }
+  })
+}
