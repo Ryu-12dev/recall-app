@@ -22,7 +22,7 @@ export default async function DashboardContent() {
         <div
           key={deck.id}
           className="group bg-white py-4 px-8 rounded-2xl shadow-md border border-white border-4
-          hover:-translate-y-1 hover:shadow-xl hover:shadow-xl
+          hover:-translate-y-1 hover:shadow-xl hover:shadow-xl hover:cursor-pointer
           transition duration-300 ease-out"
         >
           <header className="flex items-center justify-between gap-2 mb-3">

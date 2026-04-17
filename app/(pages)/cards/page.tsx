@@ -1,7 +1,12 @@
-export default function Cards() {
+import { Suspense } from "react";
+import CardsContent from "./CardsContent";
+
+export default async function Cards() {
   return (
-    <div>
-      カード一覧
-    </div>
+    <>
+      <Suspense>
+        <CardsContent />
+      </Suspense>
+    </>
   );
 }

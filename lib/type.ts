@@ -4,3 +4,10 @@ export type Deck = {
   name: string;
 }
 
+export type Card = {
+  id: string,
+  deckId: string,
+  front: string,
+  back: string,
+}
+

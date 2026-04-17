@@ -34,13 +34,15 @@ export default function AddCardModal({ id }: { id: string }) {
           name="back" 
           value={card.back}
           onChange={handleCard}
-          className="border rounded-lg text-2xl w-full mb-2 " 
+          className="border rounded-lg text-2xl w-full mb-4 " 
         />
         <button
           type="submit"
-          className={`bg-blue-400 rounded-lg p-3 text-white w-full
+          disabled={!card.front || !card.back}
+          className="bg-blue-400 rounded-lg p-3 text-white w-full
           hover:cursor-pointer
-          `}
+          disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed
+          "
 
         >
           追加する
