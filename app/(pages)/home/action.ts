@@ -73,3 +73,11 @@ export async function addCard(id: string, frontText: string, backText: string) {
     }
   })
 }
+
+export async function getCardNumber(id: string) {
+  return await prisma.cards.count({
+    where: {
+      deckId: id,
+    }
+  })
+}

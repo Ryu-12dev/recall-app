@@ -2,6 +2,7 @@ import type { Deck } from "@/lib/type";
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
 import DeckActionButtons from "./_components/DeckActionButtons";
+import { getCardNumber } from "./action";
 
 export default async function DashboardContent() {
   console.log("DATABASE_URL:", process.env.DATABASE_URL);
@@ -32,8 +33,7 @@ export default async function DashboardContent() {
           </header>
           <hr className="text-gray-400 mb-3" />
           <footer className="flex gap-4">
-            <p className="text-blue-400">新規: {}</p>
-            <p>復習: {}</p>
+            <p className="text-blue-400">カード数: {getCardNumber(deck.id)}</p>
           </footer>
         </div>
       ))}
