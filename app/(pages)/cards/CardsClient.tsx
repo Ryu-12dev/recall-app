@@ -92,7 +92,12 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
       </table>
       {editingCard && createPortal(
           <Modal onClose={handleClose} isOpen={isOpen}>
-            <EditCardModal id={editingCard.id} front={editingCard.front} back={editingCard.back} />
+            <EditCardModal 
+              id={editingCard.id} 
+              front={editingCard.front} 
+              back={editingCard.back}
+              onClose={handleClose}
+            />
           </Modal>,
           document.body
         )

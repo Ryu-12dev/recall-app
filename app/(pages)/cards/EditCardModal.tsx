@@ -3,7 +3,17 @@
 import { ChangeEvent, useState } from "react";
 import { editCard } from "./action";
 
-export default function EditCardModal({ id, front, back }: { id: string, front: string, back: string }) {
+export default function EditCardModal({
+  id,
+  front,
+  back,
+  onClose
+}: { 
+    id: string,
+    front: string,
+    back: string,
+    onClose: () => void
+  }) {
   const [card, setCard] = useState({
     front,
     back,
@@ -15,11 +25,13 @@ export default function EditCardModal({ id, front, back }: { id: string, front: 
     })
   }
   const handleSubmit = async () => {
-    editCard(id, card.front, card.back);
+    onClose();
     setCard({
       front: "",
       back: ""
-    })
+    });
+    await new Promise(resolve => setTimeout(resolve, 300));
+    await editCard(id, card.front, card.back);
   }
 
   return (
@@ -28,7 +40,10 @@ export default function EditCardModal({ id, front, back }: { id: string, front: 
       <header>
         <h2 className="text-lg font-bold mb-4">カードを編集</h2>
       </header>
-      <form action={handleSubmit}>
+      <form onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}>
         <p className="text-base mb-2">表</p>
         <textarea 
           name="front"

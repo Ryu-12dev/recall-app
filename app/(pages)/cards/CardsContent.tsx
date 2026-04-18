@@ -1,27 +1,35 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/prisma";
 import CardsClient from "./CardsClient";
+import { cacheTag } from "next/cache";
 
-export default async function CardsContent() {
+export async function CardsContent() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  return <CardsCache userId={user!.id} />;
+}
+
+export async function CardsCache({ userId }: { userId: string }) {
+  "use cache";
+  cacheTag(`cards-${userId}`);
+  console.log("DBから取得");
   const [decks, cards] = await Promise.all([
     prisma.decks.findMany({
       where: {
-        userId: user?.id,
-      }
+        userId: userId,
+      },
     }),
     prisma.cards.findMany({
       where: {
         deck: {
-          userId: user?.id,
-        }
+          userId: userId,
+        },
       },
-    })
+    }),
   ]);
 
-  return <CardsClient decks={decks} cards={cards} />
-
+  return <CardsClient decks={decks} cards={cards} />;
 }

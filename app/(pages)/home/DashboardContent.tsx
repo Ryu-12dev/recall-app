@@ -5,7 +5,6 @@ import DeckActionButtons from "./_components/DeckActionButtons";
 import { getCardNumber } from "./action";
 
 export default async function DashboardContent() {
-  console.log("DATABASE_URL:", process.env.DATABASE_URL);
   const supabase = await createClient();
   const {
     data: { user },

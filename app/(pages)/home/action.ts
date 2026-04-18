@@ -2,7 +2,8 @@
 
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { revalidatePath } from "next/cache";
+import { revalidateTag, revalidatePath } from "next/cache";
+
 
 export default async function addDeck(name: string) {
   if (!name.trim()) {
@@ -65,6 +66,8 @@ export async function editDeck(id: string, name: string) {
 }
 
 export async function addCard(id: string, frontText: string, backText: string) {
+  const supabase = await createClient();
+  const { data: { user }} = await supabase.auth.getUser();
   await prisma.cards.create({
     data: {
       deckId: id,
@@ -72,6 +75,8 @@ export async function addCard(id: string, frontText: string, backText: string) {
       back: backText,
     }
   })
+  revalidateTag(`cards-${user!.id}`, "max");
+  revalidatePath("/cards");
   revalidatePath("/dashboard");
 }
 
