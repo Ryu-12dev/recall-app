@@ -33,7 +33,9 @@ export default async function DashboardContent() {
           </header>
           <hr className="text-gray-400 mb-3" />
           <footer className="flex gap-4">
-            <p className="text-blue-400">カード数: {getCardNumber(deck.id)}</p>
+            <p>今日のカード: 
+              <span className="text-blue-500 font-semibold">{getCardNumber(deck.id)}</span>
+            </p>
           </footer>
         </div>
       ))}

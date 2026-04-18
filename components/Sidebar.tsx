@@ -31,8 +31,7 @@ export default function Sidebar() {
           <Link 
             href="/home"
             className={`flex items-center p-3 mb-3 rounded-xl
-            hover:bg-neutral-100 hover:text-blue-400
-            ${pathname == '/home' ? "bg-neutral-100 text-blue-400" : ""}`}
+            ${pathname == '/home' ? "bg-neutral-100 text-blue-400" : "hover:bg-neutral-50"}`}
           >
             <House className="mr-4" size={27} />
             <span>ホーム</span>
@@ -41,8 +40,7 @@ export default function Sidebar() {
           <Link 
             href="/cards"
             className={`flex items-center p-3 mb-3 rounded-xl 
-            hover:bg-neutral-100 hover:text-blue-400
-            ${pathname == '/cards' ? "bg-neutral-100 text-blue-400" : ""}`}
+            ${pathname == '/cards' ? "bg-neutral-100 text-blue-400" : "hover:bg-neutral-50"}`}
           >
             <Database className="mr-4" size={27} />
             <span>カード一覧</span>
@@ -50,7 +48,7 @@ export default function Sidebar() {
 
           <Link 
             href="/home"
-            className="flex items-center p-3 mb-3 rounded-xl hover:bg-neutral-100 hover:text-blue-400"
+            className="flex items-center p-3 mb-3 rounded-xl hover:bg-neutral-50"
           >
             <Activity className="mr-4" size={27} />
             <span>Coming Soon</span>

@@ -14,6 +14,13 @@ export default function AddCardModal({ id }: { id: string }) {
       [e.target.name]: e.target.value
     })
   }
+  const handleSubmit = async () => {
+    addCard(id, card.front, card.back);
+    setCard({
+      front: "",
+      back: ""
+    })
+  }
 
   return (
     <>
@@ -21,7 +28,7 @@ export default function AddCardModal({ id }: { id: string }) {
       <header>
         <h2 className="text-lg font-bold mb-4">カード追加</h2>
       </header>
-      <form action={() => addCard(id, card.front, card.back)}>
+      <form action={handleSubmit}>
         <p className="text-base mb-2">表</p>
         <textarea 
           name="front"

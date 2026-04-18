@@ -72,6 +72,7 @@ export async function addCard(id: string, frontText: string, backText: string) {
       back: backText,
     }
   })
+  revalidatePath("/dashboard");
 }
 
 export async function getCardNumber(id: string) {

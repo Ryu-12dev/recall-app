@@ -4,43 +4,60 @@ import { useState } from "react";
 
 export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Card[] }) {
   const [selectedDeckId, setSelectedDeckId] = useState<string>("");
-  
+
   const deckMap = new Map(decks.map(deck => [deck.id, deck.name]));
-  
+
   const filteredCards: Card[] = selectedDeckId === ""
     ? cards
     : cards.filter(card => card.deckId === selectedDeckId);
 
   return (
-    <div className="p-4">
-      <select
-        onChange={(e) => setSelectedDeckId(e.target.value)}
-        className="mb-4 border rounded p-2"
-      >
-        <option value="">全て</option>
-        {decks.map((deck) => (
-          <option key={deck.id} value={deck.id}>{deck.name}</option>
-        ))}
-      </select>
+    <div className="p-6">
+      <div className="flex items-center gap-3 mb-6">
+        <select
+          onChange={(e) => setSelectedDeckId(e.target.value)}
+          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 outline-none cursor-pointer"
+        >
+          <option value="">すべてのデッキ</option>
+          {decks.map((deck) => (
+            <option key={deck.id} value={deck.id}>{deck.name}</option>
+          ))}
+        </select>
+        <span className="text-sm text-gray-400 ml-auto">{filteredCards.length}枚</span>
+      </div>
 
       <table className="w-full border-collapse">
         <thead>
-          <tr className="bg-gray-100">
-            <th className="border p-2 text-left">デッキ</th>
-            <th className="border p-2 text-left">表面</th>
-            <th className="border p-2 text-left">裏面</th>
-            <th className="border p-2 text-left">操作</th>
+          <tr className="border-b border-gray-100">
+            <th className="text-sm font-normal text-gray-400 text-left pb-2 px-3 w-28">デッキ</th>
+            <th className="text-sm font-normal text-gray-400 text-left pb-2 px-3">表面</th>
+            <th className="text-sm font-normal text-gray-400 text-left pb-2 px-3">裏面</th>
+            <th className="text-sm font-normal text-gray-400 text-left pb-2 px-3 w-16">操作</th>
           </tr>
         </thead>
         <tbody>
           {filteredCards.map((card) => (
-            <tr key={card.id} className="hover:bg-gray-50">
-              <td className="border p-2">{deckMap.get(card.deckId)}</td>
-              <td className="border p-2">{card.front}</td>
-              <td className="border p-2">{card.back}</td>
-              <td className="border p-2 space-x-2">
-                <button className="text-blue-500">編集</button>
-                <button className="text-red-500">削除</button>
+            <tr
+              key={card.id}
+              className="border-b border-gray-300 last:border-none hover:bg-gray-100 transition-colors"
+            >
+              <td className="py-3 px-3 text-sm text-gray-500">{deckMap.get(card.deckId)}</td>
+              <td className="py-3 px-3 text-sm font-medium">{card.front}</td>
+              <td className="py-3 px-3 text-sm text-gray-500">{card.back}</td>
+              <td className="py-3 px-3">
+                <div className="flex items-center justify-end gap-1">
+                  <button className="w-7 h-7 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors active:scale-90">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M11 2l3 3-9 9H2v-3L11 2z"/>
+                    </svg>
+                  </button>
+                  <button className="w-7 h-7 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-colors active:scale-90">
+                    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="3,5 13,5"/>
+                      <path d="M6 5V3h4v2M5 5l1 9h4l1-9"/>
+                    </svg>
+                  </button>
+                </div>
               </td>
             </tr>
           ))}
