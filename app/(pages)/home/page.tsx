@@ -1,4 +1,4 @@
-import DashboardContent from "./DashboardContent";
+import { DashboardContent } from "./DashboardContent";
 import AddDeckModal from "./AddDeckModal";
 import { Suspense } from "react";
 

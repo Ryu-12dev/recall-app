@@ -3,18 +3,27 @@ import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
 import DeckActionButtons from "./_components/DeckActionButtons";
 import { getCardNumber } from "./action";
+import { cacheTag } from "next/cache";
 
-export default async function DashboardContent() {
+export async function DashboardContent() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  return <DecksCache userId={user!.id} />;
+
+}
+
+export async function DecksCache({ userId }: { userId: string }) {
+  "use cache"
+  cacheTag(`decks-${userId}`);
   const decks: Deck[] = await prisma.decks.findMany({
     where: {
-      userId: user?.id,
+      userId,
     },
   });
-
+  console.log("デッキを取得しました");
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {decks.map((deck) => (

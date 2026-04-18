@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/prisma";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 export async function deleteCard(id: string) {
   const supabase = await createClient();
@@ -15,6 +15,7 @@ export async function deleteCard(id: string) {
     },
   });
   revalidateTag(`cards-${user!.id}`, "max");
+  revalidatePath("/cards");
 }
 
 export async function editCard(id: string, front: string, back: string) {
@@ -32,4 +33,5 @@ export async function editCard(id: string, front: string, back: string) {
     },
   });
   revalidateTag(`cards-${user!.id}`, "max");
+  revalidatePath("/cards");
 }

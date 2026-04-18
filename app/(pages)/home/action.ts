@@ -4,19 +4,20 @@ import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
 import { revalidateTag, revalidatePath } from "next/cache";
 
-
-export default async function addDeck(name: string) {
-  if (!name.trim()) {
-    return { error: "デッキ名を入力してください。" };
-  }
-  console.log("addDeck called with name:", name);
-
+async function getUser() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log("User:", user);
+  return user;
+}
+
+export default async function addDeck(name: string) {
+  const user = await getUser();
+  if (!name.trim()) {
+    return { error: "デッキ名を入力してください。" };
+  }
 
   if (!user) {
     throw new Error("ログインが必要です");
@@ -33,21 +34,25 @@ export default async function addDeck(name: string) {
 
   console.log("Deck created successfully");
 
-  revalidatePath("/dashboard");
+  revalidateTag(`decks-${user!.id}`, "max");
+  revalidatePath("/home");
 
   return { error: null };
 }
 
 export async function deleteDeck(id: string) {
+  const user = await getUser();
   await prisma.decks.delete({
     where: {
       id,
     },
   });
-  revalidatePath("/dashboard");
+  revalidateTag(`decks-${user!.id}`, "max");
+  revalidatePath("/home");
 }
 
 export async function editDeck(id: string, name: string) {
+  const user = await getUser();
   if (!name.trim()) {
     return { error: "デッキ名を入力してください。" };
   }
@@ -60,14 +65,14 @@ export async function editDeck(id: string, name: string) {
     },
   });
 
-  revalidatePath("/dashboard");
+  revalidateTag(`decks-${user!.id}`, "max");
+  revalidatePath("/home");
 
   return { error: null };
 }
 
 export async function addCard(id: string, frontText: string, backText: string) {
-  const supabase = await createClient();
-  const { data: { user }} = await supabase.auth.getUser();
+  const user = await getUser();
   await prisma.cards.create({
     data: {
       deckId: id,
@@ -77,7 +82,7 @@ export async function addCard(id: string, frontText: string, backText: string) {
   })
   revalidateTag(`cards-${user!.id}`, "max");
   revalidatePath("/cards");
-  revalidatePath("/dashboard");
+  revalidatePath("/home");
 }
 
 export async function getCardNumber(id: string) {
