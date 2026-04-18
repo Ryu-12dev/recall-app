@@ -1,6 +1,7 @@
 "use client"
 import { type Deck, type Card } from "@/lib/type";
 import { useState } from "react";
+import deleteCard from "./action";
 
 export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Card[] }) {
   const [selectedDeckId, setSelectedDeckId] = useState<string>("");
@@ -46,12 +47,22 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
               <td className="py-3 px-3 text-sm text-gray-500">{card.back}</td>
               <td className="py-3 px-3">
                 <div className="flex items-center justify-end gap-1">
-                  <button className="w-7 h-7 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition-colors active:scale-90">
+                  <button 
+                    className="w-7 h-7 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 
+                    hover:bg-gray-100 hover:text-gray-600 
+                    transition-colors active:scale-90"
+                  >
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M11 2l3 3-9 9H2v-3L11 2z"/>
                     </svg>
                   </button>
-                  <button className="w-7 h-7 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-colors active:scale-90">
+                  <button 
+                    className="w-7 h-7 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 
+                    hover:bg-red-50 hover:border-red-200 hover:text-red-600 
+                    transition-colors active:scale-90"
+                    onClick={() => deleteCard(card.id)}
+                  >
+                    
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                       <polyline points="3,5 13,5"/>
                       <path d="M6 5V3h4v2M5 5l1 9h4l1-9"/>
