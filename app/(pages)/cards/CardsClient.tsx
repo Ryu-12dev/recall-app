@@ -1,10 +1,25 @@
 "use client"
 import { type Deck, type Card } from "@/lib/type";
 import { useState } from "react";
-import deleteCard from "./action";
+import { deleteCard } from "./action";
+import { createPortal } from "react-dom";
+import EditCardModal from "./EditCardModal";
+import Modal from "@/components/Modal";
 
 export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Card[] }) {
   const [selectedDeckId, setSelectedDeckId] = useState<string>("");
+  const [editingCard, setEditingCard] = useState<Card | null>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const handleEdit = (card: Card) => {
+    setEditingCard(card);
+    setTimeout(() => setIsOpen(true), 10);
+  }
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setTimeout(() => setEditingCard(null), 300);
+  }
 
   const deckMap = new Map(decks.map(deck => [deck.id, deck.name]));
 
@@ -51,6 +66,7 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
                     className="w-7 h-7 flex items-center justify-center rounded-md border border-gray-200 text-gray-400 
                     hover:bg-gray-100 hover:text-gray-600 
                     transition-colors active:scale-90"
+                    onClick={() => handleEdit(card)}
                   >
                     <svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M11 2l3 3-9 9H2v-3L11 2z"/>
@@ -74,6 +90,14 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
           ))}
         </tbody>
       </table>
+      {editingCard && createPortal(
+          <Modal onClose={handleClose} isOpen={isOpen}>
+            <EditCardModal id={editingCard.id} front={editingCard.front} back={editingCard.back} />
+          </Modal>,
+          document.body
+        )
+      }
     </div>
+    
   );
 }
