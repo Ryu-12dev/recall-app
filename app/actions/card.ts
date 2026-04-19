@@ -4,6 +4,24 @@ import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/prisma";
 import { revalidatePath, revalidateTag } from "next/cache";
 
+export async function addCard(id: string, frontText: string, backText: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  await prisma.cards.create({
+    data: {
+      deckId: id,
+      front: frontText,
+      back: backText,
+    }
+  })
+  revalidateTag(`cards-${user!.id}`, "max");
+  revalidatePath("/cards");
+  revalidatePath("/home");
+}
+
+
 export async function deleteCard(id: string) {
   const supabase = await createClient();
   const {

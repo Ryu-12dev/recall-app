@@ -23,16 +23,12 @@ export default async function addDeck(name: string) {
     throw new Error("ログインが必要です");
   }
 
-  console.log("Creating deck with userId:", user.id, "name:", name);
-
   await prisma.decks.create({
     data: {
       userId: user.id,
       name,
     },
   });
-
-  console.log("Deck created successfully");
 
   revalidateTag(`decks-${user!.id}`, "max");
   revalidatePath("/home");
@@ -69,20 +65,6 @@ export async function editDeck(id: string, name: string) {
   revalidatePath("/home");
 
   return { error: null };
-}
-
-export async function addCard(id: string, frontText: string, backText: string) {
-  const user = await getUser();
-  await prisma.cards.create({
-    data: {
-      deckId: id,
-      front: frontText,
-      back: backText,
-    }
-  })
-  revalidateTag(`cards-${user!.id}`, "max");
-  revalidatePath("/cards");
-  revalidatePath("/home");
 }
 
 export async function getCardNumber(id: string) {

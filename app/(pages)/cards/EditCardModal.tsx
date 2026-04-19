@@ -1,7 +1,7 @@
 "use client"
 
 import { ChangeEvent, useState } from "react";
-import { editCard } from "./action";
+import { editCard } from "@/app/actions/card";
 
 export default function EditCardModal({
   id,

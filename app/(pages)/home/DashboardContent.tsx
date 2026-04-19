@@ -2,7 +2,7 @@ import type { Deck } from "@/lib/type";
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
 import DeckActionButtons from "./_components/DeckActionButtons";
-import { getCardNumber } from "./action";
+import { getCardNumber } from "@/app/actions/deck";
 import { cacheLife, cacheTag } from "next/cache";
 
 export async function DashboardContent() {
@@ -18,7 +18,7 @@ export async function DashboardContent() {
 export async function DecksCache({ userId }: { userId: string }) {
   "use cache"
   cacheTag(`decks-${userId}`);
-  cacheLife("max");
+  cacheLife("max")
   const decks: Deck[] = await prisma.decks.findMany({
     where: {
       userId,

@@ -1,7 +1,7 @@
 "use client"
 import { type Deck, type Card } from "@/lib/type";
 import { useState } from "react";
-import { deleteCard } from "./action";
+import { deleteCard } from "@/app/actions/card";
 import { createPortal } from "react-dom";
 import EditCardModal from "./EditCardModal";
 import Modal from "@/components/Modal";

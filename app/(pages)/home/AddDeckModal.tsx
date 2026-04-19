@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { FolderPlus } from "lucide-react";
-import addDeck from "./action";
+import addDeck from "@/app/actions/deck";
 import Modal from "@/components/Modal";
 
 export default function AddDeckModal() {

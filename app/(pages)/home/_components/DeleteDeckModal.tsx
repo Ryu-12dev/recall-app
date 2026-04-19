@@ -1,4 +1,4 @@
-import { deleteDeck } from "../action";
+import { deleteDeck } from "@/app/actions/deck";
 
 export default function DeleteDeckModal({ id }: { id: string }) {
   return (

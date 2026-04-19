@@ -1,4 +1,4 @@
-import { editDeck } from "../action";
+import { editDeck } from "@/app/actions/deck";
 
 export default function EditDeckModal({ id, onClose }: { id: string, onClose: () => void }) {
   const handleSubmit = async (formData: FormData) => {

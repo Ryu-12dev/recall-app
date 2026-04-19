@@ -1,7 +1,7 @@
 "use client"
 
 import { ChangeEvent, useState } from "react";
-import { addCard } from "../action";
+import { addCard } from "@/app/actions/card";
 
 export default function AddCardModal({ id }: { id: string }) {
   const [card, setCard] = useState({
