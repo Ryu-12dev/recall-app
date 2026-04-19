@@ -8,16 +8,14 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
-enum Result {
-  CORRECT
-  INCORRECT
-}
+
 model Decks {
   id     String @id @default(uuid())
   userId String 
   name   String
   card   Cards[]
 }
+
 model Cards {
   id           String @id @default(uuid())
   deckId       String 
@@ -29,10 +27,11 @@ model Cards {
   streak       Int @default(0)
   record       Records[]
 }
+
 model Records {
   id          String @id @default(uuid())
   cardId      String
   card        Cards @relation(fields: [cardId], references: [id])
   userId      String
-  result      Result
+  result      Boolean
 }
