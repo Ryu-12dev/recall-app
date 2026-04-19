@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
 import DeckActionButtons from "./_components/DeckActionButtons";
 import { getCardNumber } from "./action";
-import { cacheTag } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 
 export async function DashboardContent() {
   const supabase = await createClient();
@@ -18,6 +18,7 @@ export async function DashboardContent() {
 export async function DecksCache({ userId }: { userId: string }) {
   "use cache"
   cacheTag(`decks-${userId}`);
+  cacheLife("max");
   const decks: Deck[] = await prisma.decks.findMany({
     where: {
       userId,
