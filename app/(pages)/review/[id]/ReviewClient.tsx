@@ -4,8 +4,6 @@ import { submitReview } from "@/app/actions/review";
 import { type Card } from "@/lib/type";
 import { useEffect, useState } from "react";
 
-export const dynamic = 'force-dynamic'
-
 export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
   const [cards, setCards] = useState<Card[]>(reviewCards);
   const [isFront, setIsFront] = useState<boolean>(true);

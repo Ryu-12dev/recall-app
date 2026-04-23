@@ -94,6 +94,4 @@ export async function submitReview(id: string, isCorrect: boolean) {
   });
 
   revalidateTag(`decks-${user!.id}`, "max");
-  revalidatePath("/home");
-
 }

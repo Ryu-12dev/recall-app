@@ -35,16 +35,14 @@ export async function DecksCache({ userId }: { userId: string }) {
           hover:-translate-y-1 hover:shadow-xl hover:shadow-xl
           transition duration-300 ease-out"
         >
-          <header className="flex items-center justify-between gap-2 mb-3">
-            <Link href={`/review/${deck.id}`}>
-              <p className="text-xl truncate flex-1 min-w-0 font-semibold
-                hover:cursor-pointer hover:text-blue-500"
-              >
-                {deck.name}
-              </p>
-            </Link>
-            <DeckActionButtons id={deck.id} />
-          </header>
+            <header className="flex items-center justify-between gap-2 mb-3">
+              <Link href={`/review/${deck.id}`} prefetch={false} className="flex-1 min-w-0">
+                <p className="text-xl truncate font-semibold hover:cursor-pointer hover:text-blue-500">
+                  {deck.name}
+                </p>
+              </Link>
+              <DeckActionButtons id={deck.id} />
+            </header>
           <hr className="text-gray-400 mb-3" />
           <footer className="flex gap-4">
             <p>今日のカード: 
