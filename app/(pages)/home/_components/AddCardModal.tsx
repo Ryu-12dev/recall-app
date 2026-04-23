@@ -15,11 +15,11 @@ export default function AddCardModal({ id }: { id: string }) {
     })
   }
   const handleSubmit = async () => {
-    addCard(id, card.front, card.back);
-    setCard({
+     setCard({
       front: "",
       back: ""
-    })
+    });
+    await addCard(id, card.front, card.back);
   }
 
   return (

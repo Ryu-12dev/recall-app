@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import DeckActionButtons from "./_components/DeckActionButtons";
 import { getCardNumber } from "@/app/actions/deck";
 import { cacheLife, cacheTag } from "next/cache";
+import Link from "next/link";
 
 export async function DashboardContent() {
   const supabase = await createClient();
@@ -31,19 +32,23 @@ export async function DecksCache({ userId }: { userId: string }) {
         <div
           key={deck.id}
           className="group bg-white py-4 px-8 rounded-2xl shadow-md border border-white border-4
-          hover:-translate-y-1 hover:shadow-xl hover:shadow-xl hover:cursor-pointer
+          hover:-translate-y-1 hover:shadow-xl hover:shadow-xl
           transition duration-300 ease-out"
         >
           <header className="flex items-center justify-between gap-2 mb-3">
-            <p className="text-xl truncate flex-1 min-w-0 font-semibold">
-              {deck.name}
-            </p>
+            <Link href={`/review/${deck.id}`}>
+              <p className="text-xl truncate flex-1 min-w-0 font-semibold
+                hover:cursor-pointer hover:text-blue-500"
+              >
+                {deck.name}
+              </p>
+            </Link>
             <DeckActionButtons id={deck.id} />
           </header>
           <hr className="text-gray-400 mb-3" />
           <footer className="flex gap-4">
             <p>今日のカード: 
-              <span className="text-blue-500 font-semibold">{getCardNumber(deck.id)}</span>
+              <span className="text-blue-500 font-semibold">{ getCardNumber(deck.id)}</span>
             </p>
           </footer>
         </div>

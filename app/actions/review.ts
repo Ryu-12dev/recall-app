@@ -3,16 +3,27 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/prisma";
 import { deleteCard } from "./card";
+import { revalidateTag, revalidatePath } from "next/cache";
 
 export async function getReviewCards(id: string) {
-  const today = new Date();
+  const now = new Date();
+
+  // JSTに変換（+9時間）
+  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+
+  // JSTで「今日の終わり」
+  jst.setHours(23, 59, 59, 999);
+
+  // UTCに戻す（-9時間）
+  const endOfTodayUTC = new Date(jst.getTime() - 9 * 60 * 60 * 1000);
+
   const reviewCards = await prisma.cards.findMany({
     where: {
       deckId: id,
       answerAt: {
-        lte: today
+        lte: endOfTodayUTC,
       },
-    }
+    },
   });
 
   return reviewCards;
@@ -33,15 +44,18 @@ export async function submitReview(id: string, isCorrect: boolean) {
     }
   });
 
+  if (!card) return;
+
   const intervalMap = [1, 3, 7, 14, 30];  // 復習間隔
-  const intervalDays = intervalMap[card!.streak];
+  const intervalDays = intervalMap[card.streak];
   const nextReviewDate = new Date();
   
   if (isCorrect) {
-    card!.streak++;
+    card.streak++;
     
-    if (card!.streak === 5) {
-      deleteCard(id);
+    if (card.streak === 5) {
+      // 削除処理を待機し、再検証が走るようにする
+      await deleteCard(id);
       return;
     }
     
@@ -54,7 +68,7 @@ export async function submitReview(id: string, isCorrect: boolean) {
       data: {
         answerAt: nextReviewDate,
         intervalDays,
-        streak: card!.streak,
+        streak: card.streak,
       }
     });
 
@@ -78,4 +92,8 @@ export async function submitReview(id: string, isCorrect: boolean) {
       result: isCorrect,
     }
   });
+
+  revalidateTag(`decks-${user!.id}`, "max");
+  revalidatePath("/home");
+
 }
