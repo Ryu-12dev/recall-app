@@ -9,7 +9,7 @@ export default function LoginPage() {
           <Image src="/favicon.ico" alt="favicon" width={35} height={35} className="mr-2"/>
           <h1 className="text-black text-4xl font-bold">Recall</h1>
         </header>
-        <p className="text-stone-400 mb-5">効率的な学習を手に入れましょう。</p>
+        <p className="text-stone-400 mb-5">ログインしてください</p>
         <form>
           <button className="hover:cursor-pointer hover:bg-zinc-100 border border-gray-200 px-10 py-2 rounded-4xl"
             formAction={signInWithGoogle}>
