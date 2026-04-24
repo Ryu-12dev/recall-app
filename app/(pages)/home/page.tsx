@@ -1,6 +1,7 @@
 import { DashboardContent } from "./DashboardContent";
 import AddDeckModal from "./AddDeckModal";
 import { Suspense } from "react";
+import Loading from "../loading";
 
 export default async function Dashboard() {
 
@@ -9,8 +10,8 @@ export default async function Dashboard() {
       <header className="mb-10">
         <AddDeckModal />
       </header>
-      <main className="">
-        <Suspense>
+      <main>
+        <Suspense fallback={<Loading />}>
           <DashboardContent />
         </Suspense>
       </main>

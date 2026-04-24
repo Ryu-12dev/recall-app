@@ -9,10 +9,10 @@ export async function CardsContent() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return <CardsCache userId={user!.id} />;
+  return <CardsCache userId={user?.id} />;
 }
 
-export async function CardsCache({ userId }: { userId: string }) {
+export async function CardsCache({ userId }: { userId: string | undefined }) {
   "use cache";
   cacheTag(`cards-${userId}`);
   cacheLife("max");

@@ -1,10 +1,11 @@
 import { Suspense } from "react";
 import { CardsContent } from "./CardsContent";
+import Loading from "../loading";
 
 export default async function Cards() {
   return (
     <>
-      <Suspense>
+      <Suspense fallback={<Loading />}>
         <CardsContent />
       </Suspense>
     </>

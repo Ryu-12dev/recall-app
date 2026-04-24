@@ -12,11 +12,11 @@ export async function DashboardContent() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return <DecksCache userId={user!.id} />;
+  return <DecksCache userId={user?.id} />;
 
 }
 
-export async function DecksCache({ userId }: { userId: string }) {
+export async function DecksCache({ userId }: { userId: string | undefined }) {
   "use cache"
   cacheTag(`decks-${userId}`);
   cacheLife("max")
