@@ -3,7 +3,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/prisma";
 import { deleteCard } from "./card";
-import { revalidateTag, revalidatePath } from "next/cache";
+import { updateTag } from "next/cache";
 
 export async function getReviewCards(id: string) {
   const now = new Date();
@@ -93,5 +93,5 @@ export async function submitReview(id: string, isCorrect: boolean) {
     }
   });
 
-  revalidateTag(`decks-${user!.id}`, "max");
+  updateTag(`decks-${user!.id}`);
 }
