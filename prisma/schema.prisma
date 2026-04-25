@@ -19,7 +19,7 @@ model Decks {
 model Cards {
   id           String @id @default(uuid())
   deckId       String 
-  deck         Decks  @relation(fields: [deckId], references: [id])
+  deck         Decks  @relation(fields: [deckId], references: [id], onDelete: Cascade)
   front        String
   back         String
   answerAt     DateTime @default(now())
@@ -31,7 +31,7 @@ model Cards {
 model Records {
   id          String @id @default(uuid())
   cardId      String
-  card        Cards @relation(fields: [cardId], references: [id])
+  card        Cards @relation(fields: [cardId], references: [id], onDelete: Cascade)
   userId      String
   result      Boolean
 }

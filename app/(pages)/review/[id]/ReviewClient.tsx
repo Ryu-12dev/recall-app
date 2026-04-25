@@ -2,7 +2,7 @@
 
 import { submitReview } from "@/app/actions/review";
 import { type Card } from "@/lib/type";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
   const [cards, setCards] = useState<Card[]>(reviewCards);
@@ -27,9 +27,7 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
 
   if (cards.length === 0 || index + 1 > cards.length) {
     return (
-      <div>
-        <p className="text-4xl">今日のカードは完了しました</p>
-      </div>
+      <p className="text-4xl text-center">今日のカードは完了しました</p>
     )
   }
 

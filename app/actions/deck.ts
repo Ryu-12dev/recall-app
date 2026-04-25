@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { revalidateTag, revalidatePath } from "next/cache";
+import { revalidateTag, revalidatePath, updateTag } from "next/cache";
 
 async function getUser() {
   const supabase = await createClient();
@@ -69,15 +69,12 @@ export async function editDeck(id: string, name: string) {
 
 export async function getCardNumber(id: string) {
   const now = new Date();
+  const jstOffset = 9 * 60 * 60 * 1000;
+  const endOfTodayUTC = new Date(now.getTime() + jstOffset);
+  endOfTodayUTC.setUTCHours(23, 59, 59, 999);
+  endOfTodayUTC.setTime(endOfTodayUTC.getTime() - jstOffset);
 
-  // JSTに変換
-  const jst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
-
-  // JSTで今日の終わり
-  jst.setHours(23, 59, 59, 999);
-
-  // UTCに戻す
-  const endOfTodayUTC = new Date(jst.getTime() - 9 * 60 * 60 * 1000);
+  console.log(endOfTodayUTC);
 
   return await prisma.cards.count({
     where: {
