@@ -2,9 +2,12 @@ import type { Deck } from "@/lib/type";
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
 import DeckActionButtons from "./_components/DeckActionButtons";
-import { getCardNumber } from "@/app/actions/deck";
 import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
+
+type DeckWithCardCount = Deck & {
+  todayCardCount: number;
+};
 
 export async function DashboardContent() {
   const supabase = await createClient();
@@ -12,20 +15,7 @@ export async function DashboardContent() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  return <DecksCache userId={user?.id} />;
-
-}
-
-export async function DecksCache({ userId }: { userId: string | undefined }) {
-  "use cache"
-  cacheTag(`decks-${userId}`);
-  cacheLife("max")
-  const decks: Deck[] = await prisma.decks.findMany({
-    where: {
-      userId,
-    },
-  });
-  console.log("デッキを取得しました");
+  const decks = await getDecks(user?.id);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {decks.map((deck) => (
@@ -46,11 +36,54 @@ export async function DecksCache({ userId }: { userId: string | undefined }) {
           <hr className="text-gray-400 mb-3" />
           <footer className="flex gap-4">
             <p>今日のカード: 
-              <span className="text-blue-500 font-semibold">{getCardNumber(deck.id)}</span>
+              <span className="text-blue-500 font-semibold">{deck.todayCardCount}</span>
             </p>
           </footer>
         </div>
       ))}
     </div>
   );
+}
+
+async function getDecks(userId: string | undefined) {
+  "use cache";
+  cacheTag(`decks-${userId}`);
+  cacheLife("max");
+
+  const now = new Date();
+  const jstOffset = 9 * 60 * 60 * 1000;
+  const endOfTodayUTC = new Date(now.getTime() + jstOffset);
+  endOfTodayUTC.setUTCHours(23, 59, 59, 999);
+  endOfTodayUTC.setTime(endOfTodayUTC.getTime() - jstOffset);
+
+  const [decks, cardCounts] = await Promise.all([
+    prisma.decks.findMany({
+      where: {
+        userId,
+      },
+    }),
+    prisma.cards.groupBy({
+      by: ["deckId"],
+      where: {
+        deck: {
+          userId,
+        },
+        answerAt: {
+          lte: endOfTodayUTC,
+        },
+      },
+      _count: {
+        _all: true,
+      },
+    }),
+  ]);
+
+  const cardCountByDeckId = new Map(
+    cardCounts.map((count) => [count.deckId, count._count._all])
+  );
+
+  return decks.map((deck): DeckWithCardCount => ({
+    ...deck,
+    todayCardCount: cardCountByDeckId.get(deck.id) ?? 0,
+  }));
 }
