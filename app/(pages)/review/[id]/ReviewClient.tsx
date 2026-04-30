@@ -9,10 +9,6 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
   const [isFront, setIsFront] = useState<boolean>(true);
   const [index, setIndex] = useState<number>(0);
 
-  console.log(`reviewCardsの要素数: ${reviewCards.length}`);
-  console.log(`現在のインデックス: ${index}`);
-  console.log(`cardsの要素数: ${cards.length}`);
-
   const handleCorrect = () => {
     submitReview(cards[index].id, true);
     setIsFront(true);
@@ -37,14 +33,14 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
         w-3xl min-h-[750px] bg-white rounded-3xl py-10 px-10"
       >
         <div className="min-w-full">
-          <p className="text-xl text-center mb-7">
+          <p className="text-xl text-center mb-7 whitespace-pre-wrap">
             {cards[index].front}
           </p>
           {
             !isFront && (
               <>
                 <hr className="text-gray-400 mb-7" />
-                <p className="text-xl text-center">{cards[index].back}</p>
+                <p className="text-xl text-center whitespace-pre-wrap">{cards[index].back}</p>
               </>
             )
           }

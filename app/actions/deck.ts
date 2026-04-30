@@ -31,6 +31,7 @@ export default async function addDeck(name: string) {
   });
 
   updateTag(`decks-${user!.id}`);
+  updateTag(`cards-${user!.id}`);
 
   return { error: null };
 }
@@ -62,7 +63,6 @@ export async function editDeck(id: string, name: string) {
   });
 
   updateTag(`decks-${user!.id}`);
-  updateTag(`cards-${user!.id}`);
 
   return { error: null };
 }
@@ -73,8 +73,6 @@ export async function getCardNumber(id: string) {
   const endOfTodayUTC = new Date(now.getTime() + jstOffset);
   endOfTodayUTC.setUTCHours(23, 59, 59, 999);
   endOfTodayUTC.setTime(endOfTodayUTC.getTime() - jstOffset);
-
-  console.log(endOfTodayUTC);
 
   return await prisma.cards.count({
     where: {

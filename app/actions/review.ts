@@ -3,7 +3,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/prisma";
 import { deleteCard } from "./card";
-import { updateTag } from "next/cache";
 
 export async function getReviewCards(id: string) {
   const now = new Date();
@@ -11,7 +10,6 @@ export async function getReviewCards(id: string) {
   const endOfTodayUTC = new Date(now.getTime() + jstOffset);
   endOfTodayUTC.setUTCHours(23, 59, 59, 999);
   endOfTodayUTC.setTime(endOfTodayUTC.getTime() - jstOffset);
-  console.log(endOfTodayUTC);
 
   const reviewCards = await prisma.cards.findMany({
     where: {
@@ -84,7 +82,6 @@ export async function submitReview(id: string, isCorrect: boolean) {
       result: isCorrect,
     }
   });
-  updateTag(`decks-${user!.id}`);
 }
 
 export async function getCardNumber(id: string) {

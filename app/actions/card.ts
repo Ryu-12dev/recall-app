@@ -19,7 +19,6 @@ export async function addCard(id: string, frontText: string, backText: string) {
   });
 
   updateTag(`cards-${user!.id}`);
-  updateTag(`decks-${user!.id}`);
 }
 
 export async function deleteCard(id: string) {
@@ -41,7 +40,6 @@ export async function deleteCard(id: string) {
   });
 
   updateTag(`cards-${user!.id}`);
-  updateTag(`decks-${user!.id}`);
 }
 
 export async function editCard(id: string, front: string, back: string) {
@@ -68,5 +66,4 @@ export async function editCard(id: string, front: string, back: string) {
   });
 
   updateTag(`cards-${user!.id}`);
-  updateTag(`decks-${user!.id}`);
 }
