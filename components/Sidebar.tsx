@@ -2,65 +2,33 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Database, Activity, LogOut, House } from "lucide-react";
 import { signOut } from "@/app/login/action";
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const pendingNavigationRef = useRef<{
-    href: string;
-    pointerDownAt?: number;
-    clickAt?: number;
-  } | null>(null);
+  const router = useRouter();
+  const isDevelopment = process.env.NODE_ENV === "development";
+  const [optimisticPath, setOptimisticPath] = useState<string | null>(null);
   const handlesignOut = async () => await signOut();
 
   useEffect(() => {
-    if (process.env.NODE_ENV !== "development") return;
-
-    const pending = pendingNavigationRef.current;
-    if (!pending || pending.href !== pathname) return;
-
-    const committedAt = performance.now();
-    const pointerDelta = pending.pointerDownAt
-      ? committedAt - pending.pointerDownAt
-      : null;
-    const clickDelta = pending.clickAt ? committedAt - pending.clickAt : null;
-
-    console.table({
-      href: pending.href,
-      pointerToCommitMs:
-        pointerDelta === null ? "n/a" : Number(pointerDelta.toFixed(1)),
-      clickToCommitMs:
-        clickDelta === null ? "n/a" : Number(clickDelta.toFixed(1)),
-    });
-
-    pendingNavigationRef.current = null;
+    setOptimisticPath(null);
   }, [pathname]);
 
-  const markPointerDown = (href: string) => {
-    if (process.env.NODE_ENV !== "development") return;
+  const activePath = optimisticPath ?? pathname;
 
-    pendingNavigationRef.current = {
-      href,
-      pointerDownAt: performance.now(),
-    };
+  const prefetch = (href: string) => {
+    if (!isDevelopment) return;
+    router.prefetch(href);
   };
 
-  const markClick = (href: string) => {
-    if (process.env.NODE_ENV !== "development") return;
-
-    const now = performance.now();
-    const current = pendingNavigationRef.current;
-
-    pendingNavigationRef.current = {
-      href,
-      pointerDownAt: current?.href === href ? current.pointerDownAt : undefined,
-      clickAt: now,
-    };
-
-    console.log("[nav-debug] click", href, now.toFixed(1));
+  const handleNavigate = (href: string) => {
+    if (isDevelopment) {
+      setOptimisticPath(href);
+    }
   };
   return (
     <aside className="border-r border-gray-300 flex flex-col h-screen justify-between p-4">
@@ -83,10 +51,11 @@ export default function Sidebar() {
         <nav className="flex flex-col">
           <Link 
             href="/home"
-            onPointerDown={() => markPointerDown("/home")}
-            onClick={() => markClick("/home")}
+            onMouseEnter={() => prefetch("/home")}
+            onFocus={() => prefetch("/home")}
+            onClick={() => handleNavigate("/home")}
             className={`flex items-center p-3 mb-3 rounded-xl
-            ${pathname == '/home' ? "bg-neutral-100 text-blue-400" : "hover:bg-neutral-50"}`}
+            ${activePath === '/home' ? "bg-neutral-100 text-blue-400" : "hover:bg-neutral-50"}`}
           >
             <House className="mr-4" size={27} />
             <span>ホーム</span>
@@ -94,10 +63,11 @@ export default function Sidebar() {
 
           <Link 
             href="/cards"
-            onPointerDown={() => markPointerDown("/cards")}
-            onClick={() => markClick("/cards")}
+            onMouseEnter={() => prefetch("/cards")}
+            onFocus={() => prefetch("/cards")}
+            onClick={() => handleNavigate("/cards")}
             className={`flex items-center p-3 mb-3 rounded-xl 
-            ${pathname == '/cards' ? "bg-neutral-100 text-blue-400" : "hover:bg-neutral-50"}`}
+            ${activePath === '/cards' ? "bg-neutral-100 text-blue-400" : "hover:bg-neutral-50"}`}
           >
             <Database className="mr-4" size={27} />
             <span>カード一覧</span>
@@ -105,8 +75,9 @@ export default function Sidebar() {
 
           <Link 
             href="/home"
-            onPointerDown={() => markPointerDown("/home")}
-            onClick={() => markClick("/home")}
+            onMouseEnter={() => prefetch("/home")}
+            onFocus={() => prefetch("/home")}
+            onClick={() => handleNavigate("/home")}
             className="flex items-center p-3 mb-3 rounded-xl hover:bg-neutral-50"
           >
             <Activity className="mr-4" size={27} />

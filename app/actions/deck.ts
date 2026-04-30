@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma/prisma";
 import { createClient } from "@/lib/supabase/server";
-import { revalidateTag, revalidatePath, updateTag } from "next/cache";
+import { updateTag } from "next/cache";
 
 async function getUser() {
   const supabase = await createClient();
@@ -30,8 +30,7 @@ export default async function addDeck(name: string) {
     },
   });
 
-  revalidateTag(`decks-${user!.id}`, "max");
-  revalidatePath("/home");
+  updateTag(`decks-${user!.id}`);
 
   return { error: null };
 }
@@ -43,8 +42,9 @@ export async function deleteDeck(id: string) {
       id,
     },
   });
-  revalidateTag(`decks-${user!.id}`, "max");
-  revalidatePath("/home");
+
+  updateTag(`decks-${user!.id}`);
+  updateTag(`cards-${user!.id}`);
 }
 
 export async function editDeck(id: string, name: string) {
@@ -61,8 +61,8 @@ export async function editDeck(id: string, name: string) {
     },
   });
 
-  revalidateTag(`decks-${user!.id}`, "max");
-  revalidatePath("/home");
+  updateTag(`decks-${user!.id}`);
+  updateTag(`cards-${user!.id}`);
 
   return { error: null };
 }

@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/prisma";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { updateTag } from "next/cache";
 
 export async function addCard(id: string, frontText: string, backText: string) {
   const supabase = await createClient();
@@ -18,11 +18,8 @@ export async function addCard(id: string, frontText: string, backText: string) {
     }
   });
 
-  // タグとパスの再検証
-  revalidateTag(`cards-${user!.id}`, "max");
-  revalidateTag(`decks-${user!.id}`, "max");
-  revalidatePath("/cards");
-  revalidatePath("/home");
+  updateTag(`cards-${user!.id}`);
+  updateTag(`decks-${user!.id}`);
 }
 
 export async function deleteCard(id: string) {
@@ -43,11 +40,8 @@ export async function deleteCard(id: string) {
     },
   });
 
-  // 関連するすべてのキャッシュを破棄
-  revalidateTag(`cards-${user!.id}`, "max");
-  revalidateTag(`decks-${user!.id}`, "max");
-  revalidatePath("/cards");
-  revalidatePath("/home");
+  updateTag(`cards-${user!.id}`);
+  updateTag(`decks-${user!.id}`);
 }
 
 export async function editCard(id: string, front: string, back: string) {
@@ -73,8 +67,6 @@ export async function editCard(id: string, front: string, back: string) {
     },
   });
 
-  revalidateTag(`cards-${user!.id}`, "max");
-  revalidateTag(`decks-${user!.id}`, "max");
-  revalidatePath("/cards");
-  revalidatePath("/home");
+  updateTag(`cards-${user!.id}`);
+  updateTag(`decks-${user!.id}`);
 }
