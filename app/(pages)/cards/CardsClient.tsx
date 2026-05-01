@@ -32,7 +32,7 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
       <div className="flex items-center gap-3 mb-6">
         <select
           onChange={(e) => setSelectedDeckId(e.target.value)}
-          className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 outline-none cursor-pointer"
+          className="w-full text-sm border border-gray-200 rounded-lg px-3 py-1.5 outline-none cursor-pointer"
         >
           <option value="">すべてのデッキ</option>
           {decks.map((deck) => (

@@ -25,7 +25,7 @@ export default function EditCardModal({
   };
 
   return (
-    <div className="w-xl">
+    <div className="w-full">
       <header>
         <h2 className="text-lg font-bold mb-4">カードを編集</h2>
       </header>
@@ -35,7 +35,7 @@ export default function EditCardModal({
           name="front"
           value={card.front}
           onChange={handleCard}
-          className="border rounded-lg text-2xl w-full mb-2"
+          className="border rounded-lg text-xl w-full mb-2 p-2"
         />
         <p className="text-base mb-2">裏</p>
         <textarea

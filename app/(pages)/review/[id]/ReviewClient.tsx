@@ -23,24 +23,24 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
 
   if (cards.length === 0 || index + 1 > cards.length) {
     return (
-      <p className="text-4xl text-center">今日のカードは完了しました</p>
+      <p className="text-2xl md:text-4xl text-center">今日のカードは完了しました</p>
     )
   }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <div className="flex flex-col items-center justify-between
-        w-3xl min-h-[750px] bg-white rounded-3xl py-10 px-10"
+        w-full max-w-3xl min-h-[60vh] bg-white rounded-3xl py-10 px-6 md:px-10"
       >
-        <div className="min-w-full">
-          <p className="text-xl text-center mb-7 whitespace-pre-wrap">
+        <div className="w-full">
+          <p className="text-lg md:text-xl text-center mb-7 whitespace-pre-wrap">
             {cards[index].front}
           </p>
           {
             !isFront && (
               <>
                 <hr className="text-gray-400 mb-7" />
-                <p className="text-xl text-center whitespace-pre-wrap">{cards[index].back}</p>
+                <p className="text-lg md:text-xl text-center whitespace-pre-wrap">{cards[index].back}</p>
               </>
             )
           }

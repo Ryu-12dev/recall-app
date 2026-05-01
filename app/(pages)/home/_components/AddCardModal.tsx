@@ -18,7 +18,7 @@ export default function AddCardModal({ id }: { id: string }) {
   };
 
   return (
-    <div className="w-xl">
+    <div className="w-full md:w-xl">
       <header>
         <h2 className="text-lg font-bold mb-4">カード追加</h2>
       </header>
@@ -28,14 +28,14 @@ export default function AddCardModal({ id }: { id: string }) {
           name="front"
           value={card.front}
           onChange={handleCard}
-          className="border rounded-lg text-2xl w-full mb-2"
+          className="border rounded-lg text-xl w-full mb-2"
         />
         <p className="text-base mb-2">裏</p>
         <textarea
           name="back"
           value={card.back}
           onChange={handleCard}
-          className="border rounded-lg text-2xl w-full mb-4"
+          className="border rounded-lg text-xl w-full mb-4"
         />
         <button
           type="submit"

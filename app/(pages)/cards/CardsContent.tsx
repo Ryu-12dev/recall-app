@@ -16,7 +16,6 @@ export async function CardsCache({ userId }: { userId: string | undefined }) {
   "use cache";
   cacheTag(`cards-${userId}`);
   cacheLife("max");
-  console.log("DBから取得");
   const [decks, cards] = await Promise.all([
     prisma.decks.findMany({
       where: {
