@@ -6,8 +6,8 @@ import Loading from "../loading";
 export default async function Dashboard() {
 
   return (
-    <div className="pl-20 pt-10 pr-20">
-      <header className="mb-10">
+    <div className="px-5 pt-20 md:pt-10 md:px-10">
+      <header className="mb-5 md:mb-10">
         <AddDeckModal />
       </header>
       <main>

@@ -31,7 +31,7 @@ export default function Sidebar() {
     }
   };
   return (
-    <aside className="border-r border-gray-300 flex flex-col h-screen justify-between p-4">
+    <aside className="border-r border-gray-300 flex flex-col h-screen justify-between bg-white p-4 w-56">
       
       {/* 上部 */}
       <div>

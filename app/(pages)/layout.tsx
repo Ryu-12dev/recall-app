@@ -1,11 +1,11 @@
 import { ReactNode, Suspense } from "react";
-import Sidebar from "@/components/Sidebar";
+import SidebarWrapper from "@/components/SidebarWrapper";
 
 export default async function PagesLayout({ children }: { children: ReactNode }) {
   return (
     <div className="flex h-screen">
       <Suspense>
-        <Sidebar />
+        <SidebarWrapper />
       </Suspense>
       <main className="bg-sky-50 flex-1 overflow-y-auto">{children}</main>
     </div>

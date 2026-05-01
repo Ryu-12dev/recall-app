@@ -3,7 +3,7 @@ export default function Modal({ onClose, isOpen, children }: { onClose: () => vo
   return (
     <div 
       onClick={onClose}
-      className={`fixed inset-0 bg-black/50 flex items-center justify-center transition-opacity duration-300 
+      className={`fixed inset-0 z-50 bg-black/50 flex items-center justify-center transition-opacity duration-300 
       ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
       <div 
         className="bg-white p-6 rounded-xl"
