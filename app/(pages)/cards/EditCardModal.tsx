@@ -25,7 +25,7 @@ export default function EditCardModal({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full md:w-xl">
       <header>
         <h2 className="text-lg font-bold mb-4">カードを編集</h2>
       </header>
