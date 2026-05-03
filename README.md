@@ -1,36 +1,91 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# デモ動画
+https://github.com/user-attachments/assets/f52f2df3-3598-4638-832f-163925c19a78
 
-## Getting Started
+https://github.com/user-attachments/assets/7731bb26-b39e-4268-91d4-079cbbeb4a1e
 
-First, run the development server:
+# 概要
+このWebアプリは間隔反復学習を支援する暗記カード形式の学習アプリです。
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+カードを作成し、正解・不正解によって、自動で次の復習日が計算されます。6回連続で正解することによって自動でカードを削除、1回でも不正解になると1回目からやり直しです。
+# URL
+https://recall-app-h4p9.vercel.app
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+上のURLにアクセスすると、ログインページに遷移します。そこからGoogleアカウントでログインして、アプリを利用します。
+# 画面プレビュー
+## ログイン
+<img width="1470" height="956" alt="スクリーンショット 2026-05-02 15 10 58" src="https://github.com/user-attachments/assets/058f690d-885e-46f0-a0a0-3a6a70edf63b" />
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ホーム
+<img width="1470" height="956" alt="スクリーンショット 2026-05-02 15 11 32" src="https://github.com/user-attachments/assets/ebb44c8c-b153-4e9b-b30f-6c0b44fe8c59" />
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## カード一覧
+<img width="1470" height="956" alt="スクリーンショット 2026-05-02 15 11 49" src="https://github.com/user-attachments/assets/19b97db2-0001-41be-a9af-79124f50718c" />
 
-## Learn More
+## 復習
+<img width="1470" height="956" alt="スクリーンショット 2026-05-02 15 38 33" src="https://github.com/user-attachments/assets/f49ffef5-0fe9-4621-9336-5205beb87040" />
 
-To learn more about Next.js, take a look at the following resources:
+# 技術スタック
+- **フレームワーク**: Next.js 16 (App Router, Turbopack)
+- **言語**: TypeScript
+- **データベース**: Supabase
+- **ORM**: Prisma
+- **認証**: Supabase Auth（Google OAuth）
+- **スタイリング**: TailwindCSS
+- **デプロイ**: Vercel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# 機能
+- ログイン・ログアウト（Google OAuth）
+- デッキの作成・編集・削除
+- カードの作成・編集・削除
+- 復習機能
+  - 正解するたびに1日後→３日後→７日後→１４日後→28日後と徐々に間隔が大きくなります。
+  - カードを作成した当日に取り組んだ分を含め、6回連続で正解すると自動でカードが削除されます。
+  - 不正解となった場合、復習間隔がリセットされ、1回目からやり直しになります。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# 開発背景
 
-## Deploy on Vercel
+　このアプリを開発した理由は、自身の学習の効率化と既存の暗記カードアプリの問題を解決するためです。
+ 
+　学習で最も大事なことはアウトプットすることです。しかし、私はインプット過多になってしまうことがあり、学んだ知識を記憶から引き出せない場面が多くあります。これを改善するために、長期記憶をサポートするアプリが必要だと考えました。
+ 
+　また、既存の暗記カードアプリは複雑でとっつきにくい問題があります。最もスタンダードな暗記アプリ「Anki」は、非常に機能が多くて便利ですが、それ故に学習コストが高いです。私は、「いいアプリ」とはどこをどうすればどうなるかが直感でわかるものだと考えています。Ankiの良さを残し、無駄な機能を排除して、より洗練されたものにしたいと考え、「Recall」の開発に至りました。
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Todo
+## 優先順位　高
+- [ ] **数式の挿入機能**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Recallは英単語などの単純な暗記科目だけでなく、数学などの理系科目にも対応したものにしたいと考えているため、この優先順位としています。
+
+- [ ] **穴埋め機能**
+
+穴埋め機能は、現在最もスタンダードな暗記カードアプリ「Anki」でも非常によく使われる機能です。科目を問わず多用できる機能のため、この優先順位としています。
+
+- [ ] **カード作成時にプレビューを表示**
+
+数式や穴埋め機能を実装する場合、実際のカードのプレビューを見ることができた方がユーザビリティの向上につながるため、この優先順位としています。
+
+- [ ] **モバイルでのUI/UXを改善**
+
+現在モバイルからアクセスすると、デッキの削除・編集ができません。モバイル中心で使用する場合は不便になるため、この優先順位としています。
+
+## 優先順位　中
+- [ ] **画像挿入機能**
+
+図などを問題に挿入し、問題を作成したい場面が度々見られます。数式や穴埋めよりは使用頻度は低いため、この優先順位としています。
+
+- [ ] **カードのワード検索機能**
+
+カードの量が多くなってくると、デッキごとの絞り込みだけでは不十分になる恐れがあります。現段階ではそこまでカードが多くなる場面はないのでこの優先順位としています。
+
+- [ ] **アクティビティ機能**
+
+コントリビュージョンやデッキごとのカード数、解いた問題数、正解率などをグラフ形式で表示し、ユーザーのモチベーションの維持をサポートします。この機能はなくても十分に使用できるため、この優先順位としています。
+
+## 優先順位　低
+- [ ] **AIによる自動問題作成**
+
+さらに効率化を図るために、AIによって自動で問題を作成します。現段階でそこまでの効率化は必要がないためこの順位としています。
+
+- [ ] **復習間隔の設定機能**
+
+デッキごとに最適な復習間隔を設定できる機能です。例えば、英単語のような単純な暗記作業の場合は短めの間隔で、数学のような深い思考が求められる場合は長めの間隔に設定します。しかし、現在のデフォルトの間隔はバランスがよく、どの科目でも対応できると考えたため、この優先順位としています。
