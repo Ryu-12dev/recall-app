@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { signInWithGoogle } from "./action";
+import InAppBrowserBanner from "./InAppBrowserBanner"; // 追加
 
 export default function LoginPage() {
   return (
@@ -10,6 +11,7 @@ export default function LoginPage() {
           <h1 className="text-black text-4xl font-bold">Recall</h1>
         </header>
         <p className="text-stone-400 mb-5">ログインしてください</p>
+        <InAppBrowserBanner /> 
         <form>
           <button className="hover:cursor-pointer hover:bg-zinc-100 border border-gray-200 px-10 py-2 rounded-4xl"
             formAction={signInWithGoogle}>
@@ -23,4 +25,3 @@ export default function LoginPage() {
     </div>
   );
 }
-
