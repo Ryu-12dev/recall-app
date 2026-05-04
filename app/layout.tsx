@@ -21,8 +21,10 @@ export default function RootLayout({
       lang="en"
       className={dmSans.className}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
-      <Analytics />
+      <body className="min-h-full flex flex-col">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
