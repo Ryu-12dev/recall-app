@@ -23,7 +23,9 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
 
   if (cards.length === 0 || index + 1 > cards.length) {
     return (
-      <p className="text-2xl md:text-4xl text-center">今日のカードは完了しました</p>
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-2xl md:text-4xl text-center">今日のカードは完了しました</p>
+      </div>
     );
   }
 
