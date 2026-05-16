@@ -3,6 +3,7 @@ import { submitReview } from "@/app/actions/review";
 import { type Card } from "@/lib/type";
 import { useState } from "react";
 import MathText from "@/components/MathText";
+import { getCardAnswer, getCardPrompt } from "@/lib/cloze";
 
 export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
   const [cards] = useState<Card[]>(reviewCards);
@@ -29,6 +30,10 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
     );
   }
 
+  const currentCard = cards[index];
+  const prompt = getCardPrompt(currentCard.front);
+  const answer = getCardAnswer(currentCard.front, currentCard.back);
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
       <div
@@ -37,14 +42,14 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
       >
         <div className="w-full">
           <MathText
-            text={cards[index].front}
+            text={prompt}
             className="text-lg md:text-xl text-center mb-7"
           />
           {!isFront && (
             <>
               <hr className="text-gray-400 mb-7" />
               <MathText
-                text={cards[index].back}
+                text={answer}
                 className="text-lg md:text-xl text-center"
               />
             </>

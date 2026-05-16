@@ -4,6 +4,7 @@ import { addCard } from "@/app/actions/card";
 import MathText from "@/components/MathText";
 import { Eye, ArrowLeft, Sigma } from "lucide-react";
 import { TOOLBAR_ITEMS } from "@/lib/toolbar";
+import { getCardAnswer, getCardPrompt, hasCloze } from "@/lib/cloze";
 
 type Field = "front" | "back";
 
@@ -64,7 +65,13 @@ export default function AddCardModal({ id }: { id: string }) {
     });
   };
 
+  const isClozeCard = hasCloze(card.front);
+  const isSubmitDisabled = !card.front || (!isClozeCard && !card.back) || isPending;
+
   if (showPreview) {
+    const previewFront = getCardPrompt(card.front);
+    const previewBack = getCardAnswer(card.front, card.back);
+
     return (
       <div className="w-[min(800px,calc(100vw-3rem))]">
         <header className="grid grid-cols-3 mb-4">
@@ -84,9 +91,9 @@ export default function AddCardModal({ id }: { id: string }) {
             w-full min-h-[60vh] bg-white rounded-3xl py-10 px-6 md:px-10"
         >
           <div className="w-full">
-            <MathText text={card.front} className="text-lg md:text-xl text-center mb-7" />
+            <MathText text={previewFront} className="text-lg md:text-xl text-center mb-7" />
             <hr className="text-gray-400 mb-7" />
-            <MathText text={card.back} className="text-lg md:text-xl text-center" />
+            <MathText text={previewBack} className="text-lg md:text-xl text-center" />
           </div>
         </div>
       </div>
@@ -153,6 +160,9 @@ export default function AddCardModal({ id }: { id: string }) {
 
       <form action={handleSubmit}>
         <p className="text-base mb-2">表</p>
+        <p className="mb-2 text-xs text-gray-400">
+          穴埋めは <code>{"{{答え}}"}</code> の形式で入力します。
+        </p>
         <textarea
           ref={frontRef}
           name="front"
@@ -162,6 +172,9 @@ export default function AddCardModal({ id }: { id: string }) {
           className="border rounded-lg text-xl w-full mb-2"
         />
         <p className="text-base mb-2">裏</p>
+        <p className="mb-2 text-xs text-gray-400">
+          穴埋めカードでは、ここに補足説明や解き方を入れられます。
+        </p>
         <textarea
           ref={backRef}
           name="back"
@@ -172,7 +185,7 @@ export default function AddCardModal({ id }: { id: string }) {
         />
         <button
           type="submit"
-          disabled={!card.front || !card.back || isPending}
+          disabled={isSubmitDisabled}
           className="bg-blue-400 rounded-lg p-3 text-white w-full
             hover:cursor-pointer
             disabled:bg-gray-200 disabled:text-gray-400 disabled:cursor-not-allowed"

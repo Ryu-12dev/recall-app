@@ -1,4 +1,5 @@
 export const TOOLBAR_ITEMS = [
+  { label: "{{…}}", insert: "{{}}",          cursorBack: 2, title: "穴埋め" },
   { label: "$…$",   insert: "$$",              cursorBack: 1, title: "インライン数式" },
   { label: "$$…$$", insert: "$$$$",            cursorBack: 2, title: "ブロック数式" },
   { label: "a/b",   insert: "\\frac{}{}",      cursorBack: 1, title: "分数" },

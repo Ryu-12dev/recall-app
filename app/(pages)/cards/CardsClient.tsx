@@ -5,6 +5,7 @@ import { deleteCard } from "@/app/actions/card";
 import { createPortal } from "react-dom";
 import EditCardModal from "./EditCardModal";
 import Modal from "@/components/Modal";
+import { getCardAnswer, getCardPrompt } from "@/lib/cloze";
 
 export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Card[] }) {
   const [selectedDeckId, setSelectedDeckId] = useState<string>("");
@@ -58,8 +59,8 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
               className="border-b border-gray-300 last:border-none hover:bg-gray-100 transition-colors"
             >
               <td className="py-3 px-3 text-sm text-gray-500">{deckMap.get(card.deckId)}</td>
-              <td className="py-3 px-3 text-sm font-medium">{card.front}</td>
-              <td className="py-3 px-3 text-sm text-gray-500">{card.back}</td>
+              <td className="py-3 px-3 text-sm font-medium">{getCardPrompt(card.front)}</td>
+              <td className="py-3 px-3 text-sm text-gray-500 whitespace-pre-wrap">{getCardAnswer(card.front, card.back)}</td>
               <td className="py-3 px-3">
                 <div className="flex items-center justify-end gap-1">
                   <button 
