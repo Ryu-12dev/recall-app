@@ -4,7 +4,7 @@ import DeckActionButtons from "./_components/DeckActionButtons";
 import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
 import { getCardNumber } from "@/app/actions/deck";
-
+import FooterButton from "./_components/FooterButton";
 
 export async function DashboardContent() {
   const supabase = await createClient();
@@ -18,23 +18,26 @@ export async function DashboardContent() {
       {decks.map((deck) => (
         <div
           key={deck.id}
-          className="group bg-white py-4 px-8 rounded-2xl shadow-md border border-white border-4
+          className="group bg-white py-4 px-6 rounded-2xl shadow-md border border-white border-4
           hover:-translate-y-1 hover:shadow-xl hover:shadow-xl
           transition duration-300 ease-out"
         >
-            <header className="flex items-center justify-between gap-2 mb-3">
-              <Link href={`/review/${deck.id}`} prefetch={false} className="flex-1 min-w-0">
-                <p className="text-xl truncate font-semibold hover:cursor-pointer hover:text-blue-500">
-                  {deck.name}
-                </p>
-              </Link>
-              <DeckActionButtons id={deck.id} />
-            </header>
+          <header className="flex items-center justify-between gap-2 mb-3">
+            <Link href={`/review/${deck.id}`} prefetch={false} className="flex-1 min-w-0">
+              <p className="text-xl truncate font-semibold hover:cursor-pointer hover:text-blue-500">
+                {deck.name}
+              </p>
+            </Link>
+            <DeckActionButtons id={deck.id} />
+          </header>
           <hr className="text-gray-400 mb-3" />
-          <footer className="flex gap-4">
+          <footer className="flex justify-between gap-4">
             <p>今日のカード: 
               <span className="text-blue-500 font-semibold">{getCardNumber(deck.id)}</span>
             </p>
+            <div className="sm:hidden flex gap-6">
+              <FooterButton id={deck.id} />
+            </div>
           </footer>
         </div>
       ))}

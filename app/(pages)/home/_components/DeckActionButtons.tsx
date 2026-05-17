@@ -26,14 +26,15 @@ export default function DeckActionButtons({ id }: { id: string }) {
   return (
     <div className="flex items-center gap-6">
       <div className="hidden group-hover:flex items-center gap-6 shrink-0">
-        <IconButton onClick={editModalOpen}>
-          <Pencil size={17} />
-        </IconButton>
+        <div className="hidden sm:flex gap-6">
+          <IconButton onClick={editModalOpen}>
+            <Pencil size={17} />
+          </IconButton>
 
-        <IconButton onClick={deleteModalOpen}>
-          <LucideTrash size={17} />
-        </IconButton>
-
+          <IconButton onClick={deleteModalOpen}>
+            <LucideTrash size={17} />
+          </IconButton>
+        </div>
         {
           isMounted &&
             createPortal(
