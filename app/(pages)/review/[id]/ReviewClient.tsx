@@ -4,30 +4,35 @@ import { type Card } from "@/lib/type";
 import { useState } from "react";
 import MathText from "@/components/MathText";
 import { getCardAnswer, getCardPrompt } from "@/lib/cloze";
+import { redirect } from "next/navigation";
 
 export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
   const [cards] = useState<Card[]>(reviewCards);
   const [isFront, setIsFront] = useState<boolean>(true);
   const [index, setIndex] = useState<number>(0);
 
-  const handleCorrect = () => {
-    submitReview(cards[index].id, true);
+  const handleResult = (result: boolean) => {
+    submitReview(cards[index].id, result);
     setIsFront(true);
     setIndex(prev => prev + 1);
   };
 
-  const handleInCorrect = () => {
-    submitReview(cards[index].id, false);
-    setIsFront(true);
-    setIndex(prev => prev + 1);
-  };
-
-  if (cards.length === 0 || index + 1 > cards.length) {
+  if (cards.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <p className="text-2xl md:text-4xl text-center">今日のカードは完了しました</p>
+        <p className="text-2xl md:text-4xl text-center">今日のカードはありません</p>
       </div>
     );
+  } else if (index + 1 > cards.length) {
+    setTimeout(() => {
+      redirect("/home");
+    }, 1000)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-2xl md:text-4xl text-center">おつかれさまでした</p>
+        <p className="text-lg text-center text-gray-400">1秒後に遷移します</p>
+      </div>
+    )
   }
 
   const currentCard = cards[index];
@@ -67,14 +72,14 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
           ) : (
             <div className="flex items-center justify-center gap-4">
               <button
-                onClick={handleCorrect}
+                onClick={() => handleResult(true)}
                 className="px-4 py-3 rounded-3xl border border-gray-300
                   hover:cursor-pointer hover:bg-gray-100"
               >
                 正解
               </button>
               <button
-                onClick={handleInCorrect}
+                onClick={() => handleResult(false)}
                 className="px-4 py-3 rounded-3xl border border-gray-300
                   hover:cursor-pointer hover:bg-gray-100"
               >
