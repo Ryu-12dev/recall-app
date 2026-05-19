@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma/prisma";
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedUserId } from "@/lib/supabase/server";
 import DeckActionButtons from "./_components/DeckActionButtons";
 import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
@@ -7,12 +7,8 @@ import { getCardNumber } from "@/app/actions/deck";
 import FooterButton from "./_components/FooterButton";
 
 export async function DashboardContent() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const decks = await getDecks(user?.id);
+  const userId = await getAuthenticatedUserId();
+  const decks = await getDecks(userId ?? undefined);
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {decks.map((deck) => (

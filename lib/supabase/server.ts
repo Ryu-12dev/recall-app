@@ -12,7 +12,7 @@ export async function createClient() {
         getAll() {
           return cookieStore.getAll()
         },
-        setAll(cookiesToSet, _headers) {
+        setAll(cookiesToSet) {
           try {
             cookiesToSet.forEach(({ name, value, options }) =>
               cookieStore.set(name, value, options)
@@ -26,4 +26,15 @@ export async function createClient() {
       },
     }
   )
+}
+
+export async function getAuthenticatedUserId() {
+  const supabase = await createClient()
+  const { data, error } = await supabase.auth.getClaims()
+
+  if (error || !data?.claims.sub) {
+    return null
+  }
+
+  return data.claims.sub
 }

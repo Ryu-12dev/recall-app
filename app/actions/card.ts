@@ -1,14 +1,14 @@
 "use server";
 
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedUserId } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/prisma";
 import { updateTag } from "next/cache";
 
 export async function addCard(id: string, frontText: string, backText: string) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
+    throw new Error("ログインが必要です");
+  }
 
   await prisma.cards.create({
     data: {
@@ -18,14 +18,14 @@ export async function addCard(id: string, frontText: string, backText: string) {
     }
   });
 
-  updateTag(`cards-${user!.id}`);
+  updateTag(`cards-${userId}`);
 }
 
 export async function deleteCard(id: string) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
+    throw new Error("ログインが必要です");
+  }
 
   await prisma.records.deleteMany({
     where: {
@@ -39,14 +39,14 @@ export async function deleteCard(id: string) {
     },
   });
 
-  updateTag(`cards-${user!.id}`);
+  updateTag(`cards-${userId}`);
 }
 
 export async function editCard(id: string, front: string, back: string) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
+    throw new Error("ログインが必要です");
+  }
 
   const card = await prisma.cards.findUnique({
     where: { id },
@@ -65,5 +65,5 @@ export async function editCard(id: string, front: string, back: string) {
     },
   });
 
-  updateTag(`cards-${user!.id}`);
+  updateTag(`cards-${userId}`);
 }

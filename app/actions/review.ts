@@ -1,6 +1,6 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedUserId } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/prisma";
 import { deleteCard } from "./card";
 
@@ -24,8 +24,10 @@ export async function getReviewCards(id: string) {
 }
 
 export async function submitReview(id: string, isCorrect: boolean) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const userId = await getAuthenticatedUserId();
+  if (!userId) {
+    throw new Error("ログインが必要です");
+  }
 
   const card = await prisma.cards.findUnique({
     select: {
@@ -78,7 +80,7 @@ export async function submitReview(id: string, isCorrect: boolean) {
   await prisma.records.create({
     data: {
       cardId: id,
-      userId: user!.id,
+      userId,
       result: isCorrect,
     }
   });

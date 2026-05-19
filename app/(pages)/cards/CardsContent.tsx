@@ -1,15 +1,11 @@
-import { createClient } from "@/lib/supabase/server";
+import { getAuthenticatedUserId } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma/prisma";
 import CardsClient from "./CardsClient";
 import { cacheLife, cacheTag } from "next/cache";
 
 export async function CardsContent() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  return <CardsCache userId={user?.id} />;
+  const userId = await getAuthenticatedUserId();
+  return <CardsCache userId={userId ?? undefined} />;
 }
 
 export async function CardsCache({ userId }: { userId: string | undefined }) {
