@@ -5,30 +5,21 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Database, Activity, LogOut, House } from "lucide-react";
 import { signOut } from "@/app/login/action";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
-  const isDevelopment = process.env.NODE_ENV === "development";
   const [optimisticPath, setOptimisticPath] = useState<string | null>(null);
   const handlesignOut = async () => await signOut();
-
-  useEffect(() => {
-    setOptimisticPath(null);
-  }, [pathname]);
-
-  const activePath = optimisticPath ?? pathname;
+  const activePath = optimisticPath && optimisticPath !== pathname ? optimisticPath : pathname;
 
   const prefetch = (href: string) => {
-    if (!isDevelopment) return;
     router.prefetch(href);
   };
 
   const handleNavigate = (href: string) => {
-    if (isDevelopment) {
-      setOptimisticPath(href);
-    }
+    setOptimisticPath(href);
   };
   return (
     <aside className="border-r border-gray-300 flex flex-col h-screen justify-between bg-white p-4 w-56">
