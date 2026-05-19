@@ -19,6 +19,7 @@ export async function addCard(id: string, frontText: string, backText: string) {
   });
 
   updateTag(`cards-${userId}`);
+  updateTag(`decks-${userId}`);
 }
 
 export async function deleteCard(id: string) {
@@ -40,6 +41,7 @@ export async function deleteCard(id: string) {
   });
 
   updateTag(`cards-${userId}`);
+  updateTag(`decks-${userId}`);
 }
 
 export async function editCard(id: string, front: string, back: string) {

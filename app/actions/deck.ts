@@ -65,23 +65,8 @@ export async function editDeck(id: string, name: string) {
   });
 
   updateTag(`decks-${user.id}`);
+  updateTag(`cards-${user.id}`);
 
   return { error: null };
 }
 
-export async function getCardNumber(id: string) {
-  const now = new Date();
-  const jstOffset = 9 * 60 * 60 * 1000;
-  const endOfTodayUTC = new Date(now.getTime() + jstOffset);
-  endOfTodayUTC.setUTCHours(23, 59, 59, 999);
-  endOfTodayUTC.setTime(endOfTodayUTC.getTime() - jstOffset);
-
-  return await prisma.cards.count({
-    where: {
-      deckId: id,
-      answerAt: {
-        lte: endOfTodayUTC,
-      },
-    },
-  });
-}

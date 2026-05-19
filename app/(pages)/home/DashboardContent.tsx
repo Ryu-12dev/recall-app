@@ -3,7 +3,6 @@ import { getAuthenticatedUserId } from "@/lib/supabase/server";
 import DeckActionButtons from "./_components/DeckActionButtons";
 import { cacheLife, cacheTag } from "next/cache";
 import Link from "next/link";
-import { getCardNumber } from "@/app/actions/deck";
 import FooterButton from "./_components/FooterButton";
 
 export async function DashboardContent() {
@@ -29,7 +28,7 @@ export async function DashboardContent() {
           <hr className="text-gray-400 mb-3" />
           <footer className="flex justify-between gap-4">
             <p>今日のカード: 
-              <span className="text-blue-500 font-semibold">{getCardNumber(deck.id)}</span>
+              <span className="text-blue-500 font-semibold">{getCardNumber(userId, deck.id)}</span>
             </p>
             <div className="sm:hidden flex gap-6">
               <FooterButton id={deck.id} />
@@ -50,5 +49,29 @@ async function getDecks(userId: string | undefined) {
     where: {
       userId,
     },
-  })
+  });
+}
+
+async function getCardNumber(userId: string | null, id: string) {
+  "use cache";
+  const jstNow = new Date(Date.now() + 9 * 60 * 60 * 1000);
+  const dateKey = jstNow.toISOString().slice(0, 10);
+  cacheTag(`cards-${userId}-${dateKey}`);
+  cacheTag(`cards-${userId}`);
+  cacheLife("max");
+
+  const now = new Date();
+  const jstOffset = 9 * 60 * 60 * 1000;
+  const endOfTodayUTC = new Date(now.getTime() + jstOffset);
+  endOfTodayUTC.setUTCHours(23, 59, 59, 999);
+  endOfTodayUTC.setTime(endOfTodayUTC.getTime() - jstOffset);
+
+  return await prisma.cards.count({
+    where: {
+      deckId: id,
+      answerAt: {
+        lte: endOfTodayUTC,
+      },
+    },
+  });
 }

@@ -2,25 +2,26 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
 import { Database, Activity, LogOut, House } from "lucide-react";
 import { signOut } from "@/app/login/action";
 import { useState } from "react";
 
 export default function Sidebar() {
-  const pathname = usePathname();
-  const router = useRouter();
-  const [optimisticPath, setOptimisticPath] = useState<string | null>(null);
+  const [isHome, setIsHome] = useState<boolean>(true);
+  const [isCard, setIsCard] = useState<boolean>(false);
+
+  const handleHome = () => {
+    setIsHome(true);
+    setIsCard(false);
+  }
+
+  const handleCard = () => {
+    setIsHome(false);
+    setIsCard(true);
+  }
+
   const handlesignOut = async () => await signOut();
-  const activePath = optimisticPath && optimisticPath !== pathname ? optimisticPath : pathname;
 
-  const prefetch = (href: string) => {
-    router.prefetch(href);
-  };
-
-  const handleNavigate = (href: string) => {
-    setOptimisticPath(href);
-  };
   return (
     <aside className="border-r border-gray-300 flex flex-col h-screen justify-between bg-white p-4 w-56">
       
@@ -34,6 +35,7 @@ export default function Sidebar() {
               width={37}
               height={37}
               className="mr-3"
+              onClick={handleHome}
             />
             <h1 className="text-3xl font-bold">Recall</h1>
           </Link>
@@ -42,11 +44,9 @@ export default function Sidebar() {
         <nav className="flex flex-col">
           <Link 
             href="/home"
-            onMouseEnter={() => prefetch("/home")}
-            onFocus={() => prefetch("/home")}
-            onClick={() => handleNavigate("/home")}
+            onClick={handleHome}
             className={`flex items-center p-3 mb-3 rounded-xl
-            ${activePath === '/home' ? "bg-neutral-100 text-blue-400" : "hover:bg-neutral-50"}`}
+            ${isHome === true ? "bg-neutral-100 text-blue-400" : "hover:bg-neutral-50"}`}
           >
             <House className="mr-4" size={27} />
             <span>ホーム</span>
@@ -54,11 +54,9 @@ export default function Sidebar() {
 
           <Link 
             href="/cards"
-            onMouseEnter={() => prefetch("/cards")}
-            onFocus={() => prefetch("/cards")}
-            onClick={() => handleNavigate("/cards")}
+            onClick={handleCard}
             className={`flex items-center p-3 mb-3 rounded-xl 
-            ${activePath === '/cards' ? "bg-neutral-100 text-blue-400" : "hover:bg-neutral-50"}`}
+            ${isCard === true ? "bg-neutral-100 text-blue-400" : "hover:bg-neutral-50"}`}
           >
             <Database className="mr-4" size={27} />
             <span>カード一覧</span>
@@ -66,9 +64,7 @@ export default function Sidebar() {
 
           <Link 
             href="/home"
-            onMouseEnter={() => prefetch("/home")}
-            onFocus={() => prefetch("/home")}
-            onClick={() => handleNavigate("/home")}
+            onClick={handleHome}
             className="flex items-center p-3 mb-3 rounded-xl hover:bg-neutral-50"
           >
             <Activity className="mr-4" size={27} />
