@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 
 export async function signInWithGoogle() {
     const supabase = await createClient();
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { data } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
@@ -19,6 +19,6 @@ export async function signInWithGoogle() {
 
 export async function signOut() {
     const supabase = await createClient();
-    const { error } = await supabase.auth.signOut()
+    await supabase.auth.signOut()
     redirect('/login')
 }

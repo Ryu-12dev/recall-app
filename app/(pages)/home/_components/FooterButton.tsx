@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { Pencil, LucideTrash } from "lucide-react";
 import IconButton from "@/components/IconButton";
 import { createPortal } from "react-dom";
@@ -11,9 +11,12 @@ import EditDeckModal from "./EditDeckModal";
 export default function FooterButton({ id }: { id: string }) {
   const [isEditModal, setIsEditModal] = useState<boolean>(false);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
-  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const isMounted = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false
+  );
 
-  useEffect(() => setIsMounted(true));
   const editModalOpen = () => setIsEditModal(true);
   const editmodalClose = () => setIsEditModal(false);
   const deleteModalOpen = () => setIsDeleteModal(true);

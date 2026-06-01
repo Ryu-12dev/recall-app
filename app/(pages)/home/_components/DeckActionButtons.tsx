@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useSyncExternalStore } from "react"
 import { Pencil, LucideTrash, Plus } from "lucide-react";
 import IconButton from "@/components/IconButton";
 import { createPortal } from "react-dom";
@@ -13,9 +13,12 @@ export default function DeckActionButtons({ id }: { id: string }) {
   const [isEditModal, setIsEditModal] = useState<boolean>(false);
   const [isDeleteModal, setIsDeleteModal] = useState<boolean>(false);
   const [isCardModal, setIsCardModal] = useState<boolean>(false);
-  const [isMounted, setIsMounted] = useState<boolean>(false);
+  const isMounted = useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false
+  );
 
-  useEffect(() => setIsMounted(true));
   const editModalOpen = () => setIsEditModal(true);
   const editmodalClose = () => setIsEditModal(false);
   const deleteModalOpen = () => setIsDeleteModal(true);
