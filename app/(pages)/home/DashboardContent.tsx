@@ -2,8 +2,8 @@ import { prisma } from "@/lib/prisma/prisma";
 import { getAuthenticatedUserId } from "@/lib/supabase/server";
 import DeckActionButtons from "./_components/DeckActionButtons";
 import { cacheLife, cacheTag } from "next/cache";
-import Link from "next/link";
 import FooterButton from "./_components/FooterButton";
+import ReviewDeckLink from "./_components/ReviewDeckLink";
 
 export async function DashboardContent() {
   const userId = await getAuthenticatedUserId();
@@ -18,11 +18,7 @@ export async function DashboardContent() {
           transition duration-300 ease-out"
         >
           <header className="flex items-center justify-between gap-2 mb-3">
-            <Link href={`/review/${deck.id}`} className="flex-1 min-w-0">
-              <p className="text-xl truncate font-semibold hover:cursor-pointer hover:text-blue-500">
-                {deck.name}
-              </p>
-            </Link>
+            <ReviewDeckLink id={deck.id} name={deck.name} />
             <DeckActionButtons id={deck.id} />
           </header>
           <hr className="text-gray-400 mb-3" />

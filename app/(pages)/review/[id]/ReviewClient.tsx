@@ -1,7 +1,7 @@
 "use client";
 import { submitReview } from "@/app/actions/review";
 import { type Card } from "@/lib/type";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import MathText from "@/components/MathText";
 import { getCardAnswer, getCardPrompt } from "@/lib/cloze";
 import { useRouter } from "next/navigation";
@@ -13,7 +13,6 @@ type ReviewSubmission = {
 
 export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
   const router = useRouter();
-  const [cards] = useState<Card[]>(reviewCards);
   const [isFront, setIsFront] = useState<boolean>(true);
   const [index, setIndex] = useState<number>(0);
   const [pendingCount, setPendingCount] = useState<number>(0);
@@ -39,7 +38,7 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
   };
 
   const handleResult = (isCorrect: boolean) => {
-    const currentCard = cards[index];
+    const currentCard = reviewCards[index];
     if (!currentCard || failedSubmissions.length > 0) return;
 
     enqueueSubmission({
@@ -56,21 +55,29 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
     submissions.forEach(enqueueSubmission);
   };
 
-  const isFinished = index >= cards.length;
+  const isFinished = index >= reviewCards.length;
   const isSaving = pendingCount > 0;
   const hasSaveError = failedSubmissions.length > 0;
 
+  useLayoutEffect(() => {
+    return () => {
+      setIsFront(true);
+      setIndex(0);
+      setFailedSubmissions([]);
+    };
+  }, []);
+
   useEffect(() => {
-    if (!isFinished || isSaving || hasSaveError || cards.length === 0) return;
+    if (!isFinished || isSaving || hasSaveError || reviewCards.length === 0) return;
 
     const timeoutId = window.setTimeout(() => {
       router.replace("/home");
     }, 1000);
 
     return () => window.clearTimeout(timeoutId);
-  }, [cards.length, hasSaveError, isFinished, isSaving, router]);
+  }, [hasSaveError, isFinished, isSaving, reviewCards.length, router]);
 
-  if (cards.length === 0) {
+  if (reviewCards.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <p className="text-2xl md:text-4xl text-center">今日のカードはありません</p>
@@ -102,7 +109,7 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
     )
   }
 
-  const currentCard = cards[index];
+  const currentCard = reviewCards[index];
   const prompt = getCardPrompt(currentCard.front);
   const answer = getCardAnswer(currentCard.front, currentCard.back);
 
