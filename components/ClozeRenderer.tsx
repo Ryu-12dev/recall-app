@@ -18,15 +18,15 @@ export default function ClozeRenderer({ text, revealed, className }: Props) {
           return <MathText key={i} text={seg.content} inline />;
         }
         return (
-          <span
-            key={i}
-            className={`inline border-b-2 mx-0.5 transition-colors ${
-              revealed
-                ? "text-blue-600 font-medium border-transparent"
-                : "text-transparent border-gray-700"
-            }`}
-          >
-            {seg.answer}
+          <span key={i} className="relative inline-block mx-0.5">
+            <MathText
+              text={seg.answer}
+              inline
+              className={revealed ? "text-blue-600" : "invisible"}
+            />
+            {!revealed && (
+              <span className="absolute bottom-0 left-0 right-0 border-b-2 border-gray-700 pointer-events-none" />
+            )}
           </span>
         );
       })}
