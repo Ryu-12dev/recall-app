@@ -96,6 +96,7 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
               id={editingCard.id} 
               front={editingCard.front} 
               back={editingCard.back}
+              cardType={editingCard.cardType}
               onClose={handleClose}
             />
           </Modal>,

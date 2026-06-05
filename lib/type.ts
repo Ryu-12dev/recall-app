@@ -5,9 +5,9 @@ export type Deck = {
 }
 
 export type Card = {
-  id: string,
-  deckId: string,
-  front: string,
-  back: string,
+  id: string;
+  deckId: string;
+  front: string;
+  back: string;
+  cardType: "BASIC" | "CLOZE";
 }
-

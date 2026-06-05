@@ -16,15 +16,21 @@ model Decks {
   card   Cards[]
 }
 
+enum CardType {
+  BASIC
+  CLOZE
+}
+
 model Cards {
-  id           String @id @default(uuid())
-  deckId       String 
-  deck         Decks  @relation(fields: [deckId], references: [id], onDelete: Cascade)
+  id           String   @id @default(uuid())
+  deckId       String
+  deck         Decks    @relation(fields: [deckId], references: [id], onDelete: Cascade)
   front        String
   back         String
+  cardType     CardType @default(BASIC)
   answerAt     DateTime @default(now())
-  intervalDays Int @default(0)
-  streak       Int @default(0)
+  intervalDays Int      @default(0)
+  streak       Int      @default(0)
   record       Records[]
 }
 

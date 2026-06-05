@@ -23,7 +23,7 @@ export async function DashboardContent() {
           transition duration-300 ease-out"
         >
             <header className="flex items-center justify-between gap-2 mb-3">
-              <Link href={`/review/${deck.id}`} prefetch={false} className="flex-1 min-w-0">
+              <Link href={`/review/${deck.id}`} className="flex-1 min-w-0">
                 <p className="text-xl truncate font-semibold hover:cursor-pointer hover:text-blue-500">
                   {deck.name}
                 </p>

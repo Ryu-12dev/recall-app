@@ -6,14 +6,14 @@ import "katex/dist/katex.min.css";
 type Props = {
   text: string;
   className?: string;
+  inline?: boolean;
 };
 
-export default function MathText({ text, className }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
+export default function MathText({ text, className, inline = false }: Props) {
+  const ref = useRef<HTMLDivElement | HTMLSpanElement>(null);
 
   useEffect(() => {
     if (!ref.current) return;
-
     const html = text
       .replace(/\$\$([\s\S]+?)\$\$/g, (_, expr) => {
         try {
@@ -30,9 +30,11 @@ export default function MathText({ text, className }: Props) {
         }
       })
       .replace(/\n/g, "<br />");
-
     ref.current.innerHTML = html;
   }, [text]);
 
-  return <div ref={ref} className={className} />;
+  if (inline) {
+    return <span ref={ref as React.RefObject<HTMLSpanElement>} className={className} />;
+  }
+  return <div ref={ref as React.RefObject<HTMLDivElement>} className={className} />;
 }

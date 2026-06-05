@@ -10,16 +10,19 @@ export async function getReviewCards(id: string) {
   const endOfTodayUTC = new Date(now.getTime() + jstOffset);
   endOfTodayUTC.setUTCHours(23, 59, 59, 999);
   endOfTodayUTC.setTime(endOfTodayUTC.getTime() - jstOffset);
-
   const reviewCards = await prisma.cards.findMany({
     where: {
       deckId: id,
-      answerAt: {
-        lte: endOfTodayUTC,
-      },
+      answerAt: { lte: endOfTodayUTC },
+    },
+    select: {
+      id: true,
+      deckId: true,
+      front: true,
+      back: true,
+      cardType: true,
     },
   });
-
   return reviewCards;
 }
 
