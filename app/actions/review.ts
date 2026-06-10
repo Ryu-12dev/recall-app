@@ -51,9 +51,10 @@ export async function submitReview(id: string, isCorrect: boolean) {
   if (isCorrect) {
     card.streak++;
 
-    if (card.streak === 5) {
-      // 削除処理を待機し、再検証が走るようにする
-      await deleteCard(id);
+    // 6回正解した場合はそのカードを削除
+    if (card.streak === 6) {
+      await prisma.records.deleteMany({ where: { cardId: id } });
+      await prisma.cards.delete({ where: { id } });
       return;
     }
 

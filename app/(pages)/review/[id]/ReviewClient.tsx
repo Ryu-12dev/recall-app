@@ -6,11 +6,13 @@ import MathText from "@/components/MathText";
 import ClozeRenderer from "@/components/ClozeRenderer";
 import { hasCloze } from "@/lib/cloze";
 
-export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
-  const [isFront, setIsFront] = useState(true);
-  const [index, setIndex] = useState(0);
+export default function ReviewClient({ cards }: { cards: Card[] }) {
+  const [reviewCards, setReviewCards] = useState<Card[]>([]);
+  const [isFront, setIsFront] = useState<boolean>(true);
+  const [index, setIndex] = useState<number>(0);
 
-  useEffect(() => { 
+  useEffect(() => {
+    setReviewCards(cards);
     setIsFront(true);
     setIndex(0);
   }, []);
