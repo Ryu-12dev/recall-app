@@ -70,6 +70,7 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
             onChange={(e) => {
               handleSearch(e.target.value);
             }}
+            defaultValue={searchParams.get('query')?.toString()}
           />
         </div>
 
