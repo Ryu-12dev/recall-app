@@ -3,6 +3,7 @@ import { type Deck, type Card } from "@/lib/type";
 import { useState } from "react";
 import { deleteCard } from "@/app/actions/card";
 import { createPortal } from "react-dom";
+import { Search } from "lucide-react";
 import EditCardModal from "./EditCardModal";
 import Modal from "@/components/Modal";
 
@@ -39,6 +40,20 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
             <option key={deck.id} value={deck.id}>{deck.name}</option>
           ))}
         </select>
+
+        {/* カード検索バー */}
+        <div className="relative ml-20 w-80">
+          <Search
+            size={16}
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400"
+          />
+          <input
+            className="text-sm border border-gray-300 px-2 py-1.5 pl-8 rounded-lg w-full
+                      focus:border-blue-500 focus:outline-none"
+            placeholder="カードを検索..."
+          />
+        </div>
+
         <span className="text-sm text-gray-400 ml-auto">{filteredCards.length}枚</span>
       </div>
 
