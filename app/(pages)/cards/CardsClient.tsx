@@ -1,6 +1,7 @@
 "use client"
 import { type Deck, type Card } from "@/lib/type";
 import { useState } from "react";
+import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { deleteCard } from "@/app/actions/card";
 import { createPortal } from "react-dom";
 import { Search } from "lucide-react";
@@ -28,6 +29,21 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
     ? cards
     : cards.filter(card => card.deckId === selectedDeckId);
 
+  // カード検索関連
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const handleSearch = (term: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (term) {
+      params.set("query", term);
+    } else {
+      params.delete("query");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <div className="p-6">
       <div className="flex items-center gap-3 mb-6">
@@ -51,6 +67,9 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
             className="text-sm border border-gray-300 px-2 py-1.5 pl-8 rounded-lg w-full
                       focus:border-blue-500 focus:outline-none"
             placeholder="カードを検索..."
+            onChange={(e) => {
+              handleSearch(e.target.value);
+            }}
           />
         </div>
 
