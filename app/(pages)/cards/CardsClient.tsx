@@ -25,12 +25,9 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
 
   const deckMap = new Map(decks.map(deck => [deck.id, deck.name]));
 
-  const filteredCards: Card[] = selectedDeckId === ""
-    ? cards
-    : cards.filter(card => card.deckId === selectedDeckId);
-
   // カード検索関連
   const searchParams = useSearchParams();
+  const query = searchParams.get("query") ?? "";
   const pathname = usePathname();
   const { replace } = useRouter();
 
@@ -43,6 +40,17 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
     }
     replace(`${pathname}?${params.toString()}`);
   };
+
+  const filteredCards = cards.filter((card) => {
+    const matchesDeck = selectedDeckId === "" || card.deckId === selectedDeckId;
+
+    const matchesSearch =
+      card.front.toLowerCase().includes(query.toLowerCase()) ||
+      card.back.toLowerCase().includes(query.toLowerCase());
+
+    return matchesDeck && matchesSearch;
+
+  });
 
   return (
     <div className="p-6">
@@ -70,7 +78,7 @@ export default function CardsClient({ decks, cards }: { decks: Deck[], cards: Ca
             onChange={(e) => {
               handleSearch(e.target.value);
             }}
-            defaultValue={searchParams.get('query')?.toString()}
+            defaultValue={query}
           />
         </div>
 
