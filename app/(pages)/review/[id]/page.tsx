@@ -9,8 +9,8 @@ type ParamProps = {
 
 async function ReviewContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const cards = await getReviewCards(id);
-  return <ReviewClient cards={cards} />;
+  const reviewCards = await getReviewCards(id);
+  return <ReviewClient reviewCards={reviewCards} />;
 }
 
 export default function Review({ params }: ParamProps) {

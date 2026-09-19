@@ -5,16 +5,19 @@ import { useEffect, useState } from "react";
 import MathText from "@/components/MathText";
 import ClozeRenderer from "@/components/ClozeRenderer";
 import { hasCloze } from "@/lib/cloze";
+import { useRouter } from "next/navigation";
 
-export default function ReviewClient({ cards }: { cards: Card[] }) {
-  const [reviewCards, setReviewCards] = useState<Card[]>([]);
+export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
   const [isFront, setIsFront] = useState<boolean>(true);
   const [index, setIndex] = useState<number>(0);
 
+  const { replace } = useRouter();
+
   useEffect(() => {
-    setReviewCards(cards);
-    setIsFront(true);
-    setIndex(0);
+    return () => {
+      setIsFront(true);
+      setIndex(0);
+    }
   }, []);
 
   const handleCorrect = () => {
@@ -29,10 +32,14 @@ export default function ReviewClient({ cards }: { cards: Card[] }) {
     setIndex(prev => prev + 1);
   };
 
-  if (index >= reviewCards.length) {
+  if (index === reviewCards.length) {
+    setTimeout(() => {
+      replace('/home');
+    }, 1000)
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="flex flex-col justify-center items-center min-h-screen">
         <p className="text-2xl md:text-4xl">今日のカードは完了しました</p>
+        <p className="text-xl text-gray-400">1秒後に遷移します</p>
       </div>
     );
   }
