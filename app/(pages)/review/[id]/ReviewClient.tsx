@@ -29,8 +29,12 @@ export default function ReviewClient({ cards }: { cards: Card[] }) {
     setIndex(prev => prev + 1);
   };
 
-  if (reviewCards.length === 0 || index >= reviewCards.length) {
-    return <p className="text-2xl md:text-4xl text-center">今日のカードは完了しました</p>;
+  if (index >= reviewCards.length) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-2xl md:text-4xl">今日のカードは完了しました</p>
+      </div>
+    );
   }
 
   const card = reviewCards[index];
