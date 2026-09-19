@@ -1,25 +1,24 @@
 "use client";
 import { submitReview } from "@/app/actions/review";
 import { type Card } from "@/lib/type";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MathText from "@/components/MathText";
 import ClozeRenderer from "@/components/ClozeRenderer";
 import { hasCloze } from "@/lib/cloze";
 import { useRouter } from "next/navigation";
 
-export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
+export default function ReviewClient({ currentReviewCards }: { currentReviewCards: Card[] }) {
+  const [reviewCards, setPrevReviewCards] = useState<Card[]>(currentReviewCards);
   const [isFront, setIsFront] = useState<boolean>(true);
   const [index, setIndex] = useState<number>(0);
 
   const { replace } = useRouter();
 
-  useEffect(() => {
-    console.log(reviewCards);
-    return () => {
-      setIsFront(true);
-      setIndex(0);
-    }
-  }, []);
+  if (reviewCards !== currentReviewCards) {
+    setPrevReviewCards(currentReviewCards);
+    setIsFront(true);
+    setIndex(0);
+  }
 
   const handleCorrect = () => {
     submitReview(reviewCards[index].id, true);
