@@ -14,6 +14,7 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
   const { replace } = useRouter();
 
   useEffect(() => {
+    console.log(reviewCards);
     return () => {
       setIsFront(true);
       setIndex(0);
@@ -49,9 +50,13 @@ export default function ReviewClient({ reviewCards }: { reviewCards: Card[] }) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="flex flex-col items-center justify-between
+      <div className="relative flex flex-col items-center justify-between
         w-full max-w-3xl min-h-[60vh] bg-white rounded-3xl py-10 px-6 md:px-10"
       >
+        <p className="absolute top-6 left-6 text-gray-400 text-lg">
+          {index + 1}/{reviewCards.length}
+        </p>
+
         <div className="w-full">
           {isCloze ? (
             <ClozeRenderer
