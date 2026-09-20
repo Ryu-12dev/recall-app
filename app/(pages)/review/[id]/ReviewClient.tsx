@@ -1,7 +1,7 @@
 "use client";
 import { submitReview } from "@/app/actions/review";
 import { type Card } from "@/lib/type";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MathText from "@/components/MathText";
 import ClozeRenderer from "@/components/ClozeRenderer";
 import { hasCloze } from "@/lib/cloze";
@@ -20,16 +20,22 @@ export default function ReviewClient({ currentReviewCards }: { currentReviewCard
     setIndex(0);
   }
 
+  const isDone = index === reviewCards.length;
+
+  useEffect(() => {
+    if (!isDone) return;
+    const timer = setTimeout(() => replace("/home"), 1000);
+    return () => clearTimeout(timer);
+  }, [isDone, replace]);
+
+
   const handleAnswer = (isCorrect: boolean) => {
     submitReview(reviewCards[index].id, isCorrect);
     setIsFront(true);
     setIndex(prev => prev + 1);
   }
 
-  if (index === reviewCards.length) {
-    setTimeout(() => {
-      replace('/home');
-    }, 1000)
+  if (isDone) {
     return (
       <div className="flex flex-col justify-center items-center min-h-screen">
         <p className="text-2xl md:text-4xl">今日のカードは完了しました</p>
