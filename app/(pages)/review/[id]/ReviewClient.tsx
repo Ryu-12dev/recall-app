@@ -8,29 +8,23 @@ import { hasCloze } from "@/lib/cloze";
 import { useRouter } from "next/navigation";
 
 export default function ReviewClient({ currentReviewCards }: { currentReviewCards: Card[] }) {
-  const [reviewCards, setPrevReviewCards] = useState<Card[]>(currentReviewCards);
+  const [reviewCards, setReviewCards] = useState<Card[]>(currentReviewCards);
   const [isFront, setIsFront] = useState<boolean>(true);
   const [index, setIndex] = useState<number>(0);
 
   const { replace } = useRouter();
 
   if (reviewCards !== currentReviewCards) {
-    setPrevReviewCards(currentReviewCards);
+    setReviewCards(currentReviewCards);
     setIsFront(true);
     setIndex(0);
   }
 
-  const handleCorrect = () => {
-    submitReview(reviewCards[index].id, true);
+  const handleAnswer = (isCorrect: boolean) => {
+    submitReview(reviewCards[index].id, isCorrect);
     setIsFront(true);
     setIndex(prev => prev + 1);
-  };
-
-  const handleInCorrect = () => {
-    submitReview(reviewCards[index].id, false);
-    setIsFront(true);
-    setIndex(prev => prev + 1);
-  };
+  }
 
   if (index === reviewCards.length) {
     setTimeout(() => {
@@ -87,10 +81,10 @@ export default function ReviewClient({ currentReviewCards }: { currentReviewCard
             </button>
           ) : (
             <div className="flex items-center justify-center gap-4">
-              <button onClick={handleCorrect}
+              <button onClick={() => handleAnswer(true)}
                 className="px-4 py-3 rounded-3xl border border-gray-300
                   hover:cursor-pointer hover:bg-gray-100">正解</button>
-              <button onClick={handleInCorrect}
+              <button onClick={() => handleAnswer(false)}
                 className="px-4 py-3 rounded-3xl border border-gray-300
                   hover:cursor-pointer hover:bg-gray-100">不正解</button>
             </div>
