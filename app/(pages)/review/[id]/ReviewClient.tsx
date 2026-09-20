@@ -14,11 +14,14 @@ export default function ReviewClient({ currentReviewCards }: { currentReviewCard
 
   const { replace } = useRouter();
 
-  if (reviewCards !== currentReviewCards) {
+  useEffect(() => {
+    // 表示（再表示）のたびに、その時点の props でセッションを始め直す。
+    // props の変化には追従しない（回答中にカードが変わらないようにするため）
     setReviewCards(currentReviewCards);
-    setIsFront(true);
     setIndex(0);
-  }
+    setIsFront(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const isDone = index === reviewCards.length;
 
